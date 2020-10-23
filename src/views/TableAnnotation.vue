@@ -245,7 +245,6 @@ export default {
   components: {},
   data: function() {
     return {
-      urlImg: null,
       dataQuality: [],
       messages: messages,
       loading: false,
@@ -348,8 +347,8 @@ export default {
           y: 10,
         },
         end: {
-          x: 50,
-          y: 50,
+          x: this.imageWidth,
+          y: this.imageHeight,
         },
         currentlyDragged: null,
       };
@@ -464,20 +463,31 @@ export default {
       this.urlImg = this.batchOfInsights[0].urlImg;
       this.insightId = this.batchOfInsights[0].insightId;
 
-      const {
-        data: { responses: responses },
-      } = await axios.get(this.batchOfInsights[0].textAnnotationsUrl);
+      const { responses: responses } = await axios.get(
+        this.batchOfInsights[0].textAnnotationsUrl
+      );
       this.textAnnotations = responses[0].textAnnotations;
 
       var img = new Image();
       img.onload = function() {
         vm.imageHeight = img.height;
         vm.imageWidth = img.width;
+
+        vm.cropRectangle = {
+          start: {
+            x: 10,
+            y: 10,
+          },
+          end: {
+            x: img.imageWidth,
+            y: img.imageHeight,
+          },
+          currentlyDragged: null,
+        };
       };
       img.src = this.urlImg;
 
       this.reset();
-      this.boxes = getBoxes(this.textAnnotations);
 
       return null;
     },
@@ -881,9 +891,9 @@ export default {
     this.urlImg = this.batchOfInsights[0].urlImg;
     this.insightId = this.batchOfInsights[0].insightId;
 
-    const {
-      data: { responses: responses },
-    } = await axios.get(this.batchOfInsights[0].textAnnotationsUrl);
+    const { responses: responses } = await axios.get(
+      this.batchOfInsights[0].textAnnotationsUrl
+    );
     this.textAnnotations = responses[0].textAnnotations;
 
     var img = new Image();
@@ -915,7 +925,6 @@ export default {
 .imageContainer {
   position: relative;
   display: inline-block;
-  text-align: left;
 }
 
 .imageContainer svg {
