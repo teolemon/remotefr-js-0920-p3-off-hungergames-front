@@ -30,55 +30,6 @@ export default {
     })
   },
 
-  loadLogo(logoId) {
-    return axios.get(
-      `${ROBOTOFF_API_URL}/images/logos/${logoId}`
-    )
-  },
-
-  updateLogo(logoId, value, type) {
-    return axios.put(
-      `${ROBOTOFF_API_URL}/images/logos/${logoId}`, {
-      params: removeEmptyKeys({
-        withCredentials: true, value, type
-      })
-    }
-    )
-  },
-
-  searchLogos(barcode, value, type, count = 25) {
-    return axios.get(
-      `${ROBOTOFF_API_URL}/images/logos`, {
-      params: removeEmptyKeys({
-        annotated: 1, barcode, value, type, count
-      })
-    }
-    )
-  },
-
-  getLogoAnnotations(logoId, index, count) {
-    const url = logoId.length > 0
-      ? `${ROBOTOFF_API_URL}/ann/${logoId}`
-      : `${ROBOTOFF_API_URL}/ann`;
-    return axios.get(
-      url, {
-      params: removeEmptyKeys({
-        index, count
-      })
-    }
-    )
-  },
-
-  annotateLogos(annotations) {
-    return axios.post(
-      `${ROBOTOFF_API_URL}/images/logos/annotate`, {
-      params: removeEmptyKeys({
-        withCredentials: true, annotations,
-      })
-    }
-    )
-  },
-
   getInsights(barcode, insightTypes, valueTag, annotation, page, count = 25) {
     let annotated
     if (annotation.length && annotation == "not_annotated") {
