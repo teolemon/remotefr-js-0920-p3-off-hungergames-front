@@ -20,18 +20,6 @@
       </viewer>
       <div class="ui divider"></div>
     </div>
-    <p v-if="brands">
-      <strong>{{$t('questions.brands')}} :</strong>
-      {{ brands }}
-    </p>
-    <p v-if="ingredientsText">
-      <strong>{{$t('questions.ingredients')}}:</strong>
-      {{ ingredientsText }}
-    </p>
-    <p v-if="countries">
-      <strong>{{$t('questions.countries')}}:</strong>
-      {{ countries }}
-    </p>
   </div>
 </template>
 
