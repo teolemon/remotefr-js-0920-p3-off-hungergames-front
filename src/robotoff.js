@@ -50,14 +50,4 @@ export default {
     return axios.get(`${ROBOTOFF_API_URL}/users/statistics/${username}`)
   },
 
-  getCroppedImageUrl(imageUrl, boundingBox) {
-    const [y_min, x_min, y_max, x_max] = boundingBox;
-    return `${ROBOTOFF_API_URL}/images/crop?image_url=${imageUrl}&y_min=${y_min}&x_min=${x_min}&y_max=${y_max}&x_max=${x_max}`;
-  },
-
-  getLogosImages(logoIds) {
-    return axios.get(
-      `${ROBOTOFF_API_URL}/images/logos?logo_ids=${logoIds.join(",")}`
-    )
-  }
 }
