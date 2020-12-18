@@ -1,7 +1,7 @@
 <template>
   <div v-if="loaded" class="product-card">
     <div v-if="imagesPreview.length > 0">
-      <viewer :images="imagesPreview" :options="imageZoomOptions" v-if="loadImage">
+      <viewer :images="imagesPreview" :options="imageZoomOptions">
         <img
           :src="url"
           v-for="url in imagesPreview"
@@ -47,7 +47,6 @@ export default {
     return {
       images: {},
       loaded: false,
-      loadImage: true,
       imageZoomOptions: {
         toolbar: {
           rotateLeft: 1,
