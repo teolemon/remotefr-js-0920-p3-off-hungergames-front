@@ -24,7 +24,7 @@
               class="times link icon"
             ></i>
           </div>
-          <div class="ui toggle checkbox" style="margin-top: 0.5rem">
+          <div class="ui toggle checkbox">
             <input v-model="sortByPopularity" type="checkbox" name="sortBy" />
             <label>{{ $t("questions.popularity_sort") }}</label>
           </div>
@@ -38,7 +38,6 @@
               <div class="ui big label">
                 {{ currentQuestion.value }}
                 <i
-                  style="margin-left: 0.5rem"
                   class="external alternate icon small blue"
                 ></i>
               </div>
@@ -48,11 +47,10 @@
             <div class="ui big label">{{ currentQuestion.value }}</div>
           </div>
           <div class="ui divider hidden"></div>
-          <viewer :options="imageZoomOptions" style="height: 300px">
+          <viewer :options="imageZoomOptions">
             <img
               :class="[imageRotationClassName]"
               :src="currentQuestionImageUrl"
-              style="max-height: 300px; max-width: 300px"
             />
           </viewer>
           <div class="ui divider hidden"></div>
@@ -83,7 +81,7 @@
             </button>
           </div>
         </div>
-        <div class="flex-center" v-else style="margin-top: 100px">
+        <div class="flex-center" v-else>
           <LoadingSpinner :show="loading" />
           <div v-if="noRemainingQuestion">
             <h2>{{ $t("questions.no_questions_remaining") }}</h2>
@@ -342,60 +340,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-#value-tag-input {
-  width: 300px;
-  margin-top: 0.5rem;
-  margin-right: 0.5rem;
-}
-
-.tag {
-  background-color: #e8e8e8;
-  display: inline-block;
-  position: relative;
-  padding: 1em 1.5em;
-  margin: 0.3em 0.15em;
-  line-height: 1;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.tag.selected {
-  background-color: #35689d;
-  color: #ffffff;
-}
-
-button.annotate {
-  padding: 2rem 2.5rem;
-}
-
-.flex-center {
-  display: flex;
-  justify-content: center;
-}
-
-.insight-column {
-  text-align: center;
-}
-
-.annotation-column {
-  background-color: #686868;
-}
-
-.rotate-0 {
-  transform: none;
-}
-
-.rotate-90 {
-  transform: rotate(90deg);
-}
-
-.rotate-180 {
-  transform: rotate(180deg);
-}
-
-.rotate-270 {
-  transform: rotate(270deg);
-}
-</style>
