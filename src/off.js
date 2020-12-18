@@ -34,20 +34,15 @@ export default {
     return username;
   },
 
-  getProduct(barcode) {
+  getImage(barcode) {
     return axios.get(
-      `${OFF_API_URL}/product/${barcode}.json?fields=product_name,brands,ingredients_text,countries_tags,images`
+      `${OFF_API_URL}/product/${barcode}.json?fields=images`
     )
   },
 
   getProductUrl(barcode) {
     const lang = getLang();
     return `https://world${lang === 'en' ? '' : '-' + lang}.openfoodfacts.org/product/${barcode}`
-  },
-
-  getProductEditUrl(barcode) {
-    const lang = getLang();
-    return `https://world${lang === 'en' ? '' : '-' + lang}.openfoodfacts.org/cgi/product.pl?type=edit&code=${barcode}`;
   },
 
   getImageUrl(imagePath) {

@@ -1,14 +1,6 @@
 <template>
   <div v-if="loaded" class="product-card">
-    <h3>{{ productName }}</h3>
-    <a target="_blank" :href="productUrl" class="ui button primary">{{$t('questions.view')}}</a>
-    <a target="_blank" :href="productEditUrl" class="ui button">{{$t('questions.edit')}}</a>
-    <div class="ui divider"></div>
-
     <div v-if="imagesPreview.length > 0">
-      <div class="ui basic segment">
-        <span @click="toggleLoadImage" class="borderless-button">{{ loadImageButtonText }}</span>
-      </div>
       <viewer :images="imagesPreview" :options="imageZoomOptions" v-if="loadImage">
         <img
           :src="url"
@@ -24,7 +16,6 @@
 </template>
 
 <script>
-import { countryMap } from "../countries";
 import offService from "../off";
 
 const BARCODE_REGEX = /(...)(...)(...)(.*)$/;
@@ -45,6 +36,7 @@ const getImageRootURL = barcode => {
   if (splittedBarcode === null) {
     return null;
   }
+
   return offService.getImageUrl(splittedBarcode.join("/"));
 };
 
@@ -53,10 +45,6 @@ export default {
   props: ["barcode"],
   data: function() {
     return {
-      productName: "",
-      brands: "",
-      ingredientsText: "",
-      countriesTags: [],
       images: {},
       loaded: false,
       loadImage: true,
@@ -70,14 +58,10 @@ export default {
   },
   watch: {
     barcode: function(value) {
+      this.images = {};
       if (value) {
         this.update();
       } else {
-        this.productName = "";
-        this.brands = "";
-        this.ingredientsText = "";
-        this.countriesTags = [];
-        this.images = {};
         this.loaded = false;
       }
     }
@@ -85,46 +69,21 @@ export default {
   methods: {
     update: function() {
       offService
-        .getProduct(this.barcode)
+        .getImage(this.barcode)
         .then(result => {
           const product = result.data.product;
-          this.productName = product.product_name || "";
-          this.brands = product.brands || "";
-          this.ingredientsText = product.ingredients_text || "";
-          this.countriesTags = product.countries_tags || [];
-          this.images = product.images || {};
+          this.images = product?.images || {};
           this.loaded = true;
         });
     },
-    toggleLoadImage: function() {
-      this.loadImage = !this.loadImage;
-    }
   },
   computed: {
-    loadImageButtonText: function() {
-      if (this.loadImage) return this.$t("questions.hide_images");
-      else return this.$t("questions.display_images");
-    },
-    productUrl: function() {
-      if (this.barcode === null) {
-        return "";
-      }
-      return offService.getProductUrl(this.barcode);
-    },
-    productEditUrl: function() {
-      if (this.barcode === null) {
-        return "";
-      }
-      return offService.getProductEditUrl(this.barcode);
-    },
-    countries: function() {
-      return this.countriesTags.map(c => countryMap[c]).join(", ");
-    },
     imagesPreview: function() {
       const imagesDisplayUrl = [];
+      const imageRootUrl = getImageRootURL(this.barcode);
       for (const key of Object.keys(this.images)) {
         if (!isNaN(key)) {
-          const imageUrl = `${getImageRootURL(this.barcode)}/${key}.jpg`;
+          const imageUrl = `${imageRootUrl}/${key}.jpg`;
           imagesDisplayUrl.push(imageUrl);
         }
       }
