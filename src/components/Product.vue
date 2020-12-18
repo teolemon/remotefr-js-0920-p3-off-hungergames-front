@@ -15,7 +15,6 @@
           v-for="url in imagesPreview"
           :key="url"
           loading="lazy"
-          style="max-height: 200px; max-width: 200px; margin-right: 3px;"
         />
       </viewer>
       <div class="ui divider"></div>
@@ -138,27 +137,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-
-@media only screen and (max-width: 767px) {
-  .product-card {
-    text-align: center;
-  }
-}
-
-.product-image {
-  max-width: 250px;
-  max-height: 250px;
-  margin: 0 3px;
-}
-
-.borderless-button {
-  color: #2185d0;
-  cursor: pointer;
-}
-
-.borderless-button:hover {
-  text-decoration: underline;
-}
-</style>

@@ -21,13 +21,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.menu-container {
-  margin-bottom: 1rem;
-}
-
-.segment {
-  border: none!important;
-}
-</style>

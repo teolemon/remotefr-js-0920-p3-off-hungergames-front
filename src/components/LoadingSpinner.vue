@@ -25,11 +25,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.centered {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-</style>
