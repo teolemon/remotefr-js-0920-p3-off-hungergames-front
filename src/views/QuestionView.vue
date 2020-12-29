@@ -1,6 +1,5 @@
 <template>
   <section class="questionContainer">
-    <div class="answerContainer">
         <!-- <div
           class="tag"
           :class="{ selected: insightType === selectedInsightType }"
@@ -28,11 +27,16 @@
             <label>{{ $t("questions.popularity_sort") }}</label>
           </div>
         </div> -->
-        <div v-if="currentQuestion">
-          <article class="currentQuestionContainer">
-            <p class="productQuestion">{{ currentQuestion.question }}</p>
-            <p class="productValue">{{ currentQuestion.value }}</p>
-          </article>
+        <div v-if="currentQuestion"  class="answerContainer">
+          <div class="questionTopContainer">
+            <article class="currentQuestionContainer">
+              <p class="productQuestion">{{ currentQuestion.question }}</p>
+              <p class="productValue">{{ currentQuestion.value }}</p>
+            </article>
+            <article class="progressionContainer">
+              <p>Prochain niveau : 15/25</p>
+            </article>
+          </div>
           <!-- The two divs bellow are hidden, they handle the brand or category with a link -->
           <!-- <div v-if="valueTagQuestionsURL.length">
             <router-link :to="valueTagQuestionsURL" target="_blank">
@@ -60,7 +64,7 @@
               class="ui button red annotate"
               @click="annotate(0)"
             >
-              {{ $t("questions.no") }}
+              <img class="buttonImg" src="../assets/no.png" alt="Back"/>
             </button>
             <button
               data-inverted
@@ -70,13 +74,16 @@
             >
               {{ $t("questions.skip") }}
             </button>
+            <button class="ui button yellow annotate">
+              <img class="buttonImg" src="../assets/back.png" alt="Back"/>
+            </button>
             <button
               data-inverted
               data-tooltip="Shortcut: o"
               class="ui button green annotate"
               @click="annotate(1)"
             >
-              {{ $t("questions.yes") }}
+              <img class="buttonImg" src="../assets/yes.png" alt="Back"/>
             </button>
           </article>
         </div>
@@ -86,7 +93,6 @@
             <h2>{{ $t("questions.no_questions_remaining") }}</h2>
           </div>
         </div>
-    </div>
     <!-- Both divs bellow are hidden but not erased for future use. -->
     <div class="otherImg">
       <Product :barcode="currentQuestionBarcode" />
