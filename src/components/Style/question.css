@@ -58,16 +58,20 @@
   height: 100%;
   padding: 0.25rem 0;
   text-align: center;
+  background-color: var(--OFFlightBlue);
 }
 .buttonsContainer button:hover {
   cursor: pointer;
 }
+.buttonsContainer button img {
+  margin: 0 auto;
+}
 .red {
-  background-color: red;
+  background-color: var(--OFFred) !important;
 }
 .yellow {
-  background-color: yellow;
+  background-color: var(--OFFyellow) !important;
 }
 .green {
-  background-color: green;
+  background-color: var(--OFFgreen) !important;
 }

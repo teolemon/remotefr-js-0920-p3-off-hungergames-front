@@ -1,5 +1,13 @@
 :root {
+  --OFFred: #ff0000;
+  --OFFyellow: #ffcc00;
+  --OFFgreen: #00d400;
+  --OFFlightBlue: #00ccff;
+  --OFFmidBlue: #0066ff;
+  --OFFwhite: #f9f9f9;
+  --OFFblack: #333333;
   font-size: 12px;
+  color: var(--OFFblack);
 }
 body {
   width: 100vw;
