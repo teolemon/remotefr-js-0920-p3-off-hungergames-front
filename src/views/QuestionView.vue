@@ -1,6 +1,6 @@
 <template>
   <section class="questionContainer">
-    <article class="answerContainer">
+    <div class="answerContainer">
         <!-- <div
           class="tag"
           :class="{ selected: insightType === selectedInsightType }"
@@ -29,10 +29,10 @@
           </div>
         </div> -->
         <div v-if="currentQuestion">
-          <div class="currentQuestionContainer">
+          <article class="currentQuestionContainer">
             <p class="productQuestion">{{ currentQuestion.question }}</p>
             <p class="productValue">{{ currentQuestion.value }}</p>
-          </div>
+          </article>
           <!-- The two divs bellow are hidden, they handle the brand or category with a link -->
           <!-- <div v-if="valueTagQuestionsURL.length">
             <router-link :to="valueTagQuestionsURL" target="_blank">
@@ -47,15 +47,13 @@
           <div v-else>
             <div class="ui big label">{{ currentQuestion.value }}</div>
           </div> -->
-          <div class="ui divider hidden"></div>
-          <viewer :options="imageZoomOptions">
+          <article class="imgContainer">
             <img
               :class="[imageRotationClassName]"
               :src="currentQuestionImageUrl"
             />
-          </viewer>
-          <div class="ui divider hidden"></div>
-          <div>
+          </article>
+          <article class="buttonsContainer">
             <button
               data-inverted
               data-tooltip="Shortcut: n"
@@ -80,7 +78,7 @@
             >
               {{ $t("questions.yes") }}
             </button>
-          </div>
+          </article>
         </div>
         <div class="flex-center" v-else>
           <LoadingSpinner :show="loading" />
@@ -88,7 +86,7 @@
             <h2>{{ $t("questions.no_questions_remaining") }}</h2>
           </div>
         </div>
-    </article>
+    </div>
     <!-- Both divs bellow are hidden but not erased for future use. -->
     <div class="otherImg">
       <Product :barcode="currentQuestionBarcode" />
