@@ -1,8 +1,7 @@
 <template>
-  <section>
-    <div class="five wide column centered">
-      <div class="insight-column">
-        <div
+  <section class="questionContainer">
+    <article class="answerContainer">
+        <!-- <div
           class="tag"
           :class="{ selected: insightType === selectedInsightType }"
           v-for="insightType of availableInsightTypes"
@@ -10,7 +9,7 @@
           @click="selectInsightType(insightType)"
         >
           {{ $t("questions." + insightType) }}
-        </div>
+        </div> -->
         <!-- <div class="ui form">
           <div class="ui icon input" id="value-tag-input">
             <input
@@ -29,11 +28,13 @@
             <label>{{ $t("questions.popularity_sort") }}</label>
           </div>
         </div> -->
-        <div class="ui divider" />
-        <div class="ui hidden divider"></div>
         <div v-if="currentQuestion">
-          <h3>{{ currentQuestion.question }}</h3>
-          <div v-if="valueTagQuestionsURL.length">
+          <div class="currentQuestionContainer">
+            <p class="productQuestion">{{ currentQuestion.question }}</p>
+            <p class="productValue">{{ currentQuestion.value }}</p>
+          </div>
+          <!-- The two divs bellow are hidden, they handle the brand or category with a link -->
+          <!-- <div v-if="valueTagQuestionsURL.length">
             <router-link :to="valueTagQuestionsURL" target="_blank">
               <div class="ui big label">
                 {{ currentQuestion.value }}
@@ -45,7 +46,7 @@
           </div>
           <div v-else>
             <div class="ui big label">{{ currentQuestion.value }}</div>
-          </div>
+          </div> -->
           <div class="ui divider hidden"></div>
           <viewer :options="imageZoomOptions">
             <img
@@ -87,12 +88,12 @@
             <h2>{{ $t("questions.no_questions_remaining") }}</h2>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="six wide column centered">
+    </article>
+    <!-- Both divs bellow are hidden but not erased for future use. -->
+    <div class="otherImg">
       <Product :barcode="currentQuestionBarcode" />
     </div>
-    <div class="three wide column annotation-column">
+    <div class="annotationColumn">
       <AnnotationCounter
         :remainingCount="remainingQuestionCount"
         :lastAnnotations="lastAnnotations"
@@ -340,3 +341,7 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+@import "../components/Style/question.css";
+</style>

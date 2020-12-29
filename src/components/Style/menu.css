@@ -1,5 +1,6 @@
 .headerNav {
   width: 100%;
+  max-width: 150px;
   z-index: 10;
 }
 .headerList:hover,
