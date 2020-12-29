@@ -1,5 +1,5 @@
 <template>
-  <div class="ui grid stackable">
+  <section>
     <div class="five wide column centered">
       <div class="insight-column">
         <div
@@ -99,7 +99,7 @@
         :sessionAnnotatedCount="sessionAnnotatedCount"
       />
     </div>
-  </div>
+  </section>
 </template>
 
 <script>

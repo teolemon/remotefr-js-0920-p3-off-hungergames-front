@@ -1,6 +1,17 @@
 <template>
-  <sui-menu attached="top">
-    <sui-dropdown item icon="bars" simple class="mobile only">
+  <nav class="headerNav">
+    <button class="headerButton" type="button" @click="setOpen()"><img class="buttonImg" src="../assets/burger.png" alt="Menu"/></button>
+    <ul class="headerList" v-if="open">
+        <li class="headerItem" @click="setOpen()">Marque</li>
+        <li class="headerItem" @click="setOpen()">Catégorie</li>
+        <li class="headerItem" @click="setOpen()">Tutoriel</li>
+        <li class="headerItem" @click="setOpen()">Profil</li>
+        <li class="headerItem" @click="setOpen()">Connexion</li>
+    </ul>
+      <!-- <router-link v-for="item in menuItems" active-class="active" class="item mobile hidden" :to="item.to" :key='item.to'>
+        {{item.label}}
+      </router-link> -->
+    <!-- <sui-dropdown item icon="bars" simple class="mobile only">
       <sui-dropdown-menu>
         <template v-for="item in menu">
           <sui-dropdown-header v-if="!item.to" :key="item.label">
@@ -18,29 +29,38 @@
     </sui-menu-item>
     <router-link v-for="item in menuItems" active-class="active" class="item mobile hidden" :to="item.to" :key='item.to'>
       {{item.label}}
-    </router-link>
-  </sui-menu>
+    </router-link> -->
+  </nav>
 </template>
 
 <script>
 export default {
   data: function() {
     return {
-      menu : [
-        {label: this.$t('menu.games')},
-        {label: this.$t('menu.questions'), to:'/questions'},
-        {},
-        {label: this.$t('menu.manage'), type: 'header'},
-        {label: this.$t('menu.settings'), to:'/settings'},
-      ]
+      open : false,
+      // menu : [
+      //   {label: this.$t('menu.games')},
+      //   {label: this.$t('menu.questions'), to:'/questions'},
+      //   {},
+      //   {label: this.$t('menu.manage'), type: 'header'},
+      //   {label: this.$t('menu.settings'), to:'/settings'},
+      // ]
     };
   },
-  computed: {
-    menuItems: function() {
-      return this.menu.filter((item) => {
-        return item.to
-      })
+  methods:{
+    setOpen(){
+      this.open = !this.open;
     }
+  },
+  computed: {
+    // menuItems: function() {
+    //   return this.menu.filter((item) => {
+    //     return item.to
+    //   })
+    // }
   }
 };
 </script>
+<style scoped>
+@import "./Style/menu.css";
+</style>

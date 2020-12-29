@@ -1,0 +1,27 @@
+body {
+  width: 100vw;
+  height: 100vh;
+  font-size: 16px;
+}
+#app {
+  width: 100%;
+  height: 100%;
+}
+.globalContainer {
+  width: 100%;
+  height: 100%;
+}
+header {
+  width: 100%;
+  height: 3.25rem;
+  display: grid;
+  grid-template-columns: 25% 75%;
+  grid-gap: 0;
+}
+h1 {
+  padding: 0.5rem;
+  margin: 0;
+  font-size: 2.25rem;
+  width: 100%;
+  text-align: left;
+}
