@@ -1,7 +1,13 @@
-.headerNav {
+.headerNav,
+.headerButton,
+.headerItem {
   width: 100%;
+}
+.headerNav {
   max-width: 150px;
+  height: 100%;
   z-index: 10;
+  background-color: var(--OFFlightBlue);
 }
 .headerList:hover,
 .headerButton:hover,
@@ -9,9 +15,10 @@
   cursor: pointer;
 }
 .headerButton {
-  width: 100%;
   height: 3.25rem;
+  margin-top: 0.75rem;
   border: none;
+  background-color: transparent;
 }
 .buttonImg {
   margin: auto;
@@ -26,7 +33,6 @@
   grid-gap: 0;
 }
 .headerItem {
-  width: 100%;
   padding: 0.5rem 1rem;
   font-size: 1.25rem;
   background-color: var(--OFFlightBlue);
