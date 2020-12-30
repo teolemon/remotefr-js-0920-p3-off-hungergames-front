@@ -64,6 +64,9 @@
 .buttonsContainer button:hover {
   cursor: pointer;
 }
+.buttonsContainer button:active {
+  box-shadow: inset 0 0 0.75rem #f9f9f9;
+}
 .buttonsContainer button img {
   width: 50%;
   margin: 0 auto;
