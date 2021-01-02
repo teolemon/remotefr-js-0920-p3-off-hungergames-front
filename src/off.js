@@ -1,12 +1,12 @@
 import { getLang } from "./settings";
-import { OFF_API_URL, OFF_IMAGE_URL } from "./const"
-import axios from 'axios';
-import combineURLs from 'axios/lib/helpers/combineURLs';
-
+import { BACK_API_NODE } from "./const";
+import axios from "axios";
 
 export default {
   getCookie(name) {
-    const cookies = document.cookie.split(';').filter((item) => item.trim().startsWith(`${name}=`));
+    const cookies = document.cookie
+      .split(";")
+      .filter((item) => item.trim().startsWith(`${name}=`));
     if (cookies.length) {
       const cookie = cookies[0];
       return cookie.split("=", 2)[1];
@@ -23,7 +23,7 @@ export default {
 
     let isNext = false;
     let username = "";
-    sessionCookie.split("&").forEach(el => {
+    sessionCookie.split("&").forEach((el) => {
       if (el === "user_id") {
         isNext = true;
       } else if (isNext) {
@@ -35,17 +35,13 @@ export default {
   },
 
   getImage(barcode) {
-    return axios.get(
-      `${OFF_API_URL}/product/${barcode}.json?fields=images`
-    )
+    return axios.get(`${BACK_API_NODE}/product/${barcode}?fields=images`);
   },
 
   getProductUrl(barcode) {
     const lang = getLang();
-    return `https://world${lang === 'en' ? '' : '-' + lang}.openfoodfacts.org/product/${barcode}`
+    return `https://world${
+      lang === "en" ? "" : "-" + lang
+    }.openfoodfacts.org/product/${barcode}`;
   },
-
-  getImageUrl(imagePath) {
-    return combineURLs(OFF_IMAGE_URL, imagePath)
-  }
-}
+};
