@@ -30,24 +30,6 @@ export default {
       .then((result) => result);
   },
 
-  getInsights(barcode, insightTypes, valueTag, annotation, page, count = 25) {
-    let annotated;
-    if (annotation.length && annotation == "not_annotated") {
-      annotated = "0";
-    }
-    return axios.get(`${ROBOTOFF_API_URL}/insights`, {
-      params: removeEmptyKeys({
-        barcode,
-        insight_types: insightTypes,
-        value_tag: valueTag,
-        annotation,
-        page,
-        annotated,
-        count,
-      }),
-    });
-  },
-
   getUserStatistics(username) {
     return axios.get(`${ROBOTOFF_API_URL}/users/statistics/${username}`);
   },
