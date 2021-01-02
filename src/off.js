@@ -1,4 +1,3 @@
-import { getLang } from "./settings";
 import { BACK_API_NODE } from "./const";
 import axios from "axios";
 
@@ -36,12 +35,5 @@ export default {
 
   getImage(barcode) {
     return axios.get(`${BACK_API_NODE}/product/${barcode}?fields=images`);
-  },
-
-  getProductUrl(barcode) {
-    const lang = getLang();
-    return `https://world${
-      lang === "en" ? "" : "-" + lang
-    }.openfoodfacts.org/product/${barcode}`;
   },
 };

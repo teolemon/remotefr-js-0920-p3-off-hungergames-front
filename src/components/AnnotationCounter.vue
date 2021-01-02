@@ -1,21 +1,21 @@
 <template>
   <div class="main-column">
-    <h3>{{$t('questions.annotations')}}</h3>
+    <h3>{{ $t("questions.annotations") }}</h3>
     <p>
-      {{$t('questions.remaining_annotations')}}
+      {{ $t("questions.remaining_annotations") }}
       <strong>{{ remainingCount }}</strong>
     </p>
     <p>
-      {{$t('questions.annotated_annotations')}}:
+      {{ $t("questions.annotated_annotations") }}:
       <strong>{{ annotatedCount }}</strong>
     </p>
     <div class="ui divider" />
-    <h3>{{$t('questions.last_annotations')}}</h3>
-    <div v-for="annotation in sortedLastAnnotations" :key="annotation.question.insight_id">
-      <a
-        target="_blank"
-        :href="getProductUrl(annotation.question.barcode)"
-      >{{ annotation.question.insight_type }}: {{ annotation.question.value }}</a>
+    <h3>{{ $t("questions.last_annotations") }}</h3>
+    <div
+      v-for="annotation in sortedLastAnnotations"
+      :key="annotation.question.insight_id"
+    >
+      {{ annotation.question.insight_type }}: {{ annotation.question.value }}
       <i v-if="annotation.annotation == 1" class="check green icon"></i>
       <i v-else-if="annotation.annotation == -1" class="question icon"></i>
       <i v-else-if="annotation.annotation == 0" class="times red icon"></i>
@@ -32,47 +32,42 @@ export default {
   props: {
     remainingCount: {
       type: Number,
-      required: true
+      required: true,
     },
     lastAnnotations: {
       type: Array,
-      required: true
+      required: true,
     },
     sessionAnnotatedCount: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
-  data: function() {
+  data: function () {
     return {
       username: offService.getUsername(),
-      historyAnnotatedCount: 0
+      historyAnnotatedCount: 0,
     };
   },
-  methods: {
-    getProductUrl: function(barcode) {
-      return offService.getProductUrl(barcode);
-    }
-  },
   computed: {
-    sortedLastAnnotations: function() {
+    sortedLastAnnotations: function () {
       const lastAnnotations = this.lastAnnotations.slice();
       return lastAnnotations.reverse();
     },
-    annotatedCount: function() {
+    annotatedCount: function () {
       return this.historyAnnotatedCount + this.sessionAnnotatedCount;
-    }
+    },
   },
   mounted() {
     if (this.username.length) {
       robotoffService
         .getUserStatistics(this.username)
-        .then(result => {
+        .then((result) => {
           this.historyAnnotatedCount = result.data.count.annotations;
         })
-        .catch(error => window.console.log(error));
+        .catch((error) => window.console.log(error));
     }
-  }
+  },
 };
 </script>
 
