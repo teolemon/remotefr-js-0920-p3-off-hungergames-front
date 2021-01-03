@@ -6,7 +6,7 @@ import { removeEmptyKeys } from "./utils";
 export default {
   annotate(insightId, annotation) {
     return axios.post(
-      `${ROBOTOFF_API_URL}/insights/annotate`,
+      `${BACK_API_NODE}/insights/annotate`,
       new URLSearchParams(
         `insight_id=${insightId}&annotation=${annotation}&update=1`
       ),
