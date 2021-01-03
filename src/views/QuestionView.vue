@@ -11,38 +11,18 @@
         >
           {{ $t("questions." + insightType) }}
         </div>
-        <!-- <div class="ui form">
-          <div class="ui icon input" id="value-tag-input">
-            <input
-              class="ui input"
-              :placeholder="$t('questions.value_search')"
-              v-model="valueTagInput"
-            />
-            <i
-              @click="clearValueTagInput()"
-              v-if="valueTagInput"
-              class="times link icon"
-            ></i>
-          </div>
-          <div class="ui toggle checkbox" style="margin-top: 0.5rem">
-            <input v-model="sortByPopularity" type="checkbox" name="sortBy" />
-            <label>{{ $t("questions.popularity_sort") }}</label>
-          </div>
-        </div> -->
         <div class="ui divider" />
         <div class="ui hidden divider"></div>
         <div v-if="currentQuestion">
           <h3>{{ currentQuestion.question }}</h3>
           <div v-if="valueTagQuestionsURL.length">
-            <router-link :to="valueTagQuestionsURL" target="_blank">
-              <div class="ui big label">
-                {{ currentQuestion.value }}
-                <i
-                  style="margin-left: 0.5rem"
-                  class="external alternate icon small blue"
-                ></i>
-              </div>
-            </router-link>
+            <button class="ui big label" v-on:click="toggleFav">
+              {{ currentQuestion.value }}
+              <i
+                v-bind:class="[is_fav ? 'fas fa-star' : 'far fa-star']"
+                style="margin-left: 0.5rem"
+              ></i>
+            </button>
           </div>
           <div v-else>
             <div class="ui big label">{{ currentQuestion.value }}</div>
@@ -118,14 +98,15 @@ import {
   NO_QUESTION_LEFT,
   insightTypesNames,
   getInitialInsightType,
-  reformatValueTag
-} from "../utils/utilsQuestionView"
+  reformatValueTag,
+} from "../utils/utilsQuestionView";
 
 export default {
   name: "QuestionView",
   components: { Product, AnnotationCounter, LoadingSpinner },
   data: function () {
     return {
+      is_fav: getURLParam("value_tag") ? true : false,
       valueTag: getURLParam("value_tag"),
       valueTagInput: getURLParam("value_tag"),
       valueTagTimeout: null,
@@ -181,6 +162,14 @@ export default {
     },
   },
   methods: {
+    toggleFav() {
+      if (this.is_fav) {
+        this.valueTagInput = "";
+      } else {
+        this.valueTagInput = this.currentQuestion.value;
+      }
+      this.is_fav = !this.is_fav;
+    },
     clearValueTagInput() {
       this.valueTagInput = "";
     },
