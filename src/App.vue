@@ -1,12 +1,10 @@
 <template>
-  <div>
+  <body>
 
-    <Menu />
-    <sui-segment attached="bottom">
-      <router-view />
-    </sui-segment>
+    <Menu id="menu" />
+    <router-view />
 
-  </div>
+  </body>
 </template>
 
 <script>

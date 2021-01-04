@@ -1,95 +1,76 @@
 <template>
-  <div class="ui grid stackable">
-    <div class="five wide column centered">
-      <div class="insight-column">
-        <div
-          class="tag"
-          :class="{ selected: insightType === selectedInsightType }"
-          v-for="insightType of availableInsightTypes"
-          :key="insightType"
-          @click="selectInsightType(insightType)"
-        >
-          {{ $t("questions." + insightType) }}
-        </div>
-        <!-- <div class="ui form">
-          <div class="ui icon input" id="value-tag-input">
-            <input
-              class="ui input"
-              :placeholder="$t('questions.value_search')"
-              v-model="valueTagInput"
-            />
-            <i
-              @click="clearValueTagInput()"
-              v-if="valueTagInput"
-              class="times link icon"
-            ></i>
-          </div>
-          <div class="ui toggle checkbox">
-            <input v-model="sortByPopularity" type="checkbox" name="sortBy" />
-            <label>{{ $t("questions.popularity_sort") }}</label>
-          </div>
-        </div> -->
-        <div class="ui divider" />
-        <div class="ui hidden divider"></div>
-        <div v-if="currentQuestion">
-          <h3>{{ currentQuestion.question }}</h3>
-          <div v-if="valueTagQuestionsURL.length">
-            <router-link :to="valueTagQuestionsURL" target="_blank">
-              <div class="ui big label">
-                {{ currentQuestion.value }}
-                <i
-                  class="external alternate icon small blue"
-                ></i>
-              </div>
-            </router-link>
-          </div>
-          <div v-else>
-            <div class="ui big label">{{ currentQuestion.value }}</div>
-          </div>
-          <div class="ui divider hidden"></div>
-          <viewer :options="imageZoomOptions">
-            <img
-              :class="[imageRotationClassName]"
-              :src="currentQuestionImageUrl"
-            />
-          </viewer>
-          <div class="ui divider hidden"></div>
-          <div>
-            <button
-              data-inverted
-              data-tooltip="Shortcut: n"
-              class="ui button red annotate"
-              @click="annotate(0)"
-            >
-              {{ $t("questions.no") }}
-            </button>
-            <button
-              data-inverted
-              data-tooltip="Shortcut: k"
-              class="ui button annotate"
-              @click="annotate(-1)"
-            >
-              {{ $t("questions.skip") }}
-            </button>
-            <button
-              data-inverted
-              data-tooltip="Shortcut: o"
-              class="ui button green annotate"
-              @click="annotate(1)"
-            >
-              {{ $t("questions.yes") }}
-            </button>
-          </div>
-        </div>
-        <div class="flex-center" v-else>
-          <LoadingSpinner :show="loading" />
-          <div v-if="noRemainingQuestion">
-            <h2>{{ $t("questions.no_questions_remaining") }}</h2>
-          </div>
-        </div>
+  <main>
+    <article v-if="currentQuestion">
+      <h2>{{ currentQuestion.question }}</h2>
+
+      <router-link 
+        v-if="valueTagQuestionsURL.length" 
+        :to="valueTagQuestionsURL" 
+        class="label"
+      >
+        
+          {{ currentQuestion.value }}
+          <i
+            class="external alternate icon small blue"
+          ></i>
+        
+      </router-link>
+
+      <div v-else class="label">
+        {{ currentQuestion.value }}
       </div>
-    </div>
-    <div class="six wide column centered">
+
+      <viewer class="productIMG" :options="imageZoomOptions">
+        <img
+          :class="[imageRotationClassName]"
+          :src="currentQuestionImageUrl"
+        />
+      </viewer>
+
+      <footer>
+        <button
+          data-inverted
+          data-tooltip="Shortcut: n"
+          class="ui button red annotate"
+          @click="annotate(0)"
+        >
+          {{ $t("questions.no") }}
+        </button>
+        <button
+          data-inverted
+          data-tooltip="Shortcut: k"
+          class="ui button annotate"
+          @click="annotate(-1)"
+        >
+          {{ $t("questions.last_annotations") }}
+        </button>
+        <button
+          data-inverted
+          data-tooltip="Shortcut: k"
+          class="ui button annotate"
+          @click="annotate(-1)"
+        >
+          {{ $t("questions.skip") }}
+        </button>
+        <button
+          data-inverted
+          data-tooltip="Shortcut: o"
+          class="ui button green annotate"
+          @click="annotate(1)"
+        >
+          {{ $t("questions.yes") }}
+        </button>
+      </footer>
+    </article>
+
+    <article v-else>
+      <LoadingSpinner :show="loading" />
+      <div v-if="noRemainingQuestion">
+        <h2>{{ $t("questions.no_questions_remaining") }}</h2>
+      </div>
+    </article>
+    
+    <!-- <div class="six wide column centered">
       <Product :barcode="currentQuestionBarcode" />
     </div>
     <div class="three wide column annotation-column">
@@ -98,16 +79,16 @@
         :lastAnnotations="lastAnnotations"
         :sessionAnnotatedCount="sessionAnnotatedCount"
       />
-    </div>
-  </div>
+    </div> -->
+  </main>
 </template>
 
 <script>
 import robotoffService from "../robotoff";
-import Product from "../components/Product";
+// import Product from "../components/Product";
 import LoadingSpinner from "../components/LoadingSpinner";
 
-import AnnotationCounter from "../components/AnnotationCounter";
+// import AnnotationCounter from "../components/AnnotationCounter";
 
 import {
   updateURLParam,
@@ -121,7 +102,11 @@ import {
 
 export default {
   name: "QuestionView",
-  components: { Product, AnnotationCounter, LoadingSpinner },
+  components: { 
+    // Product, 
+    // AnnotationCounter, 
+    LoadingSpinner 
+  },
   data: function () {
     return {
       valueTag: getURLParam("value_tag"),
