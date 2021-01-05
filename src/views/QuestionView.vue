@@ -76,7 +76,6 @@
     </div>
     <div class="three wide column annotation-column">
       <AnnotationCounter
-        :remainingCount="remainingQuestionCount"
         :lastAnnotations="lastAnnotations"
         :sessionAnnotatedCount="sessionAnnotatedCount"
       />
@@ -112,7 +111,6 @@ export default {
       valueTagTimeout: null,
       currentQuestion: null,
       questionBuffer: [],
-      remainingQuestionCount: 0,
       lastAnnotations: [],
       sessionAnnotatedCount: 0,
       insightTypesNames: insightTypesNames,
@@ -208,7 +206,6 @@ export default {
       if (annotation !== -1) {
         robotoffService.annotate(this.currentQuestion.insight_id, annotation);
         this.updateLastAnnotations(this.currentQuestion, annotation);
-        this.remainingQuestionCount -= 1;
         this.sessionAnnotatedCount += 1;
       }
       this.updateCurrentQuestion();
@@ -240,7 +237,6 @@ export default {
           count
         )
         .then((result) => {
-          this.remainingQuestionCount = result.data.count;
           if (result.data.questions.length == 0) {
             if (!this.questionBuffer.includes(NO_QUESTION_LEFT)) {
               this.questionBuffer.push(NO_QUESTION_LEFT);

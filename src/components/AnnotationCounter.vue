@@ -2,10 +2,6 @@
   <div class="main-column">
     <h3>{{ $t("questions.annotations") }}</h3>
     <p>
-      {{ $t("questions.remaining_annotations") }}
-      <strong>{{ remainingCount }}</strong>
-    </p>
-    <p>
       {{ $t("questions.annotated_annotations") }}:
       <strong>{{ annotatedCount }}</strong>
     </p>
@@ -30,10 +26,6 @@ import offService from "../off";
 export default {
   name: "AnnotationCounter",
   props: {
-    remainingCount: {
-      type: Number,
-      required: true,
-    },
     lastAnnotations: {
       type: Array,
       required: true,
