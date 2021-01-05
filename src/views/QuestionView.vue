@@ -118,7 +118,6 @@ export default {
       questionBuffer: [],
       lastAnnotations: [],
       sessionAnnotatedCount: 0,
-      insightTypesNames: insightTypesNames,
       selectedInsightType: getInitialInsightType(),
       imageRotation: 0,
       seenInsightIds: new Set(),
