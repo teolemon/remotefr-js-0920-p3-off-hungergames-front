@@ -169,9 +169,6 @@ export default {
       }
       this.is_fav = !this.is_fav;
     },
-    clearValueTagInput() {
-      this.valueTagInput = "";
-    },
     rotateImage() {
       window.console.log(this.imageRotation);
       if (this.imageRotation === 0) {

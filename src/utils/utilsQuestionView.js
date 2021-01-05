@@ -38,7 +38,6 @@ const insightTypesNames = {
   label: "label",
   category: "category",
   brand: "brand",
-  product_weight: "product weight",
 };
 
 const randomInsightTypeChoices = ["label", "category", "brand"];
@@ -87,7 +86,6 @@ const reformatValueTag = (value) => {
   return output;
 };
 
-
 export {
   updateURLParam,
   deleteURLParam,
@@ -97,5 +95,5 @@ export {
   getInitialInsightType,
   getRandomInsightType,
   reformatTagMapping,
-  reformatValueTag
-}
+  reformatValueTag,
+};
