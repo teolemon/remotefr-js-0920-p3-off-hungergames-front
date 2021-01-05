@@ -15,7 +15,7 @@
         <div class="ui hidden divider"></div>
         <div v-if="currentQuestion">
           <h3>{{ currentQuestion.question }}</h3>
-          <div v-if="valueTagQuestionsURL.length">
+          <div v-if="valueTagQuestionsURL">
             <button class="ui big label" v-on:click="toggleFav">
               {{ currentQuestion.value }}
               <i
@@ -293,20 +293,11 @@ export default {
       }
     },
     valueTagQuestionsURL: function () {
-      if (
+      return (
         this.currentQuestion !== null &&
         this.currentQuestion !== NO_QUESTION_LEFT &&
         this.selectedInsightType === "brand"
-      ) {
-        const urlParams = new URLSearchParams();
-        urlParams.append("type", this.selectedInsightType);
-        urlParams.append(
-          "value_tag",
-          reformatValueTag(this.currentQuestion.value)
-        );
-        return `/questions?${urlParams.toString()}`;
-      }
-      return "";
+      );
     },
   },
   mounted() {
