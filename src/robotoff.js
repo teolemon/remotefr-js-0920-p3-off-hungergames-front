@@ -25,6 +25,7 @@ export default {
           value_tag: valueTag,
           brands,
           country,
+          sortBy,
         }),
       })
       .then((result) => result);

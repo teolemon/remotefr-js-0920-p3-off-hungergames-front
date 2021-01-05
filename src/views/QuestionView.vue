@@ -103,6 +103,13 @@ import {
 export default {
   name: "QuestionView",
   components: { Product, AnnotationCounter, LoadingSpinner },
+  props: {
+    sortBy: {
+      type: String,
+      default: "random",
+      validator: (prop) => ["random", "popular"].includes(prop),
+    },
+  },
   data: function () {
     return {
       is_fav: getURLParam("value_tag") ? true : false,
@@ -117,7 +124,6 @@ export default {
       selectedInsightType: getInitialInsightType(),
       imageRotation: 0,
       seenInsightIds: new Set(),
-      sortByPopularity: false,
       brandFilter: getURLParam("brand"),
       countryFilter: getURLParam("country"),
       imageZoomOptions: {
@@ -146,11 +152,6 @@ export default {
       }, 1000);
     },
     valueTag: function () {
-      this.currentQuestion = null;
-      this.questionBuffer = [];
-      this.loadQuestions();
-    },
-    sortByPopularity: function () {
       this.currentQuestion = null;
       this.questionBuffer = [];
       this.loadQuestions();
@@ -225,11 +226,10 @@ export default {
       }
     },
     loadQuestions: function () {
-      const sortBy = this.sortByPopularity ? "popular" : "random";
       const count = 10;
       robotoffService
         .questions(
-          sortBy,
+          this.sortBy,
           this.selectedInsightType,
           this.valueTag,
           this.brandFilter,
