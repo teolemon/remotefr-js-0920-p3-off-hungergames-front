@@ -131,17 +131,6 @@ export default {
       },
     };
   },
-  watch: {
-    valueTag: function () {
-      updateURLParam("value_tag", this.valueTag);
-      this.currentQuestion = null;
-      this.questionBuffer = [];
-      this.loadQuestions();
-    },
-    selectedInsightType: function () {
-      this.updateInsightTypeUrlParam();
-    },
-  },
   methods: {
     toggleFav() {
       clearTimeout(this.valueTagTimeout);
@@ -168,9 +157,6 @@ export default {
         this.imageRotation = 0;
       }
     },
-    updateInsightTypeUrlParam() {
-      updateURLParam("type", this.selectedInsightType);
-    },
     updateLastAnnotations(question, annotation) {
       this.lastAnnotations.push({
         question,
@@ -182,10 +168,11 @@ export default {
       }
     },
     selectInsightType: function (insightType) {
-      this.selectedInsightType = insightType;
-      this.currentQuestion = null;
-      this.questionBuffer = [];
-      this.loadQuestions();
+      if (insightType !== this.selectedInsightType) {
+        this.selectedInsightType = insightType;
+        this.valueTag = "";
+        this.is_fav = false;
+      }
     },
     annotate: function (annotation) {
       if (annotation !== -1) {
@@ -288,7 +275,7 @@ export default {
     },
   },
   mounted() {
-    this.updateInsightTypeUrlParam();
+    updateURLParam("type", this.selectedInsightType);
     this.loadQuestions();
     const vm = this;
     window.addEventListener("keyup", function (event) {
@@ -299,6 +286,19 @@ export default {
         if (event.key === "p") vm.rotateImage();
       }
     });
+    this.$watch(
+      (vm) => ({ type: vm.selectedInsightType, value_tag: vm.valueTag }),
+      (newQuery, oldQuery) => {
+        for (const nameParam in newQuery) {
+          if (!oldQuery || newQuery[nameParam] !== oldQuery[nameParam])
+            updateURLParam(nameParam, newQuery[nameParam]);
+        }
+        this.questionBuffer = [];
+        if (!newQuery["value_tag"]) this.currentQuestion = null;
+        this.loadQuestions();
+      },
+      { immediate: true, deep: true }
+    );
   },
 };
 </script>
