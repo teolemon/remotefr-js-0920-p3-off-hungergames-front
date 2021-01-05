@@ -92,7 +92,6 @@ import AnnotationCounter from "../components/AnnotationCounter";
 
 import {
   updateURLParam,
-  deleteURLParam,
   getURLParam,
   NO_QUESTION_LEFT,
   insightTypesNames,
@@ -114,7 +113,6 @@ export default {
     return {
       is_fav: getURLParam("value_tag") ? true : false,
       valueTag: getURLParam("value_tag"),
-      valueTagInput: getURLParam("value_tag"),
       valueTagTimeout: null,
       currentQuestion: null,
       questionBuffer: [],
@@ -135,23 +133,8 @@ export default {
     };
   },
   watch: {
-    valueTagInput: function () {
-      clearTimeout(this.valueTagTimeout);
-
-      if (this.valueTagInput.length == 0) {
-        this.valueTag = "";
-        deleteURLParam("value_tag");
-        return;
-      }
-
-      const valueTagInput = this.valueTagInput.toLowerCase();
-
-      this.valueTagTimeout = setTimeout(() => {
-        this.valueTag = reformatValueTag(valueTagInput);
-        updateURLParam("value_tag", this.valueTag);
-      }, 1000);
-    },
     valueTag: function () {
+      updateURLParam("value_tag", this.valueTag);
       this.currentQuestion = null;
       this.questionBuffer = [];
       this.loadQuestions();
@@ -162,10 +145,15 @@ export default {
   },
   methods: {
     toggleFav() {
-      if (this.is_fav) {
-        this.valueTagInput = "";
-      } else {
-        this.valueTagInput = this.currentQuestion.value;
+      clearTimeout(this.valueTagTimeout);
+
+      if (this.is_fav) this.valueTag = "";
+      else {
+        this.valueTagTimeout = setTimeout(() => {
+          this.valueTag = reformatValueTag(
+            this.currentQuestion.value.toLowerCase()
+          );
+        }, 500);
       }
       this.is_fav = !this.is_fav;
     },
