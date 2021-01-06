@@ -7,7 +7,10 @@
           :class="{ selected: insightType === selectedInsightType }"
           v-for="insightType of availableInsightTypes"
           :key="insightType"
-          @click="selectInsightType(insightType)"
+          @click="
+            insightType === selectedInsightType ||
+              selectInsightType(insightType)
+          "
         >
           {{ $t("questions." + insightType) }}
         </div>
@@ -168,11 +171,9 @@ export default {
       }
     },
     selectInsightType: function (insightType) {
-      if (insightType !== this.selectedInsightType) {
-        this.selectedInsightType = insightType;
-        this.valueTag = "";
-        this.is_fav = false;
-      }
+      this.selectedInsightType = insightType;
+      this.valueTag = "";
+      this.is_fav = false;
     },
     annotate: function (annotation) {
       if (annotation !== -1) {
