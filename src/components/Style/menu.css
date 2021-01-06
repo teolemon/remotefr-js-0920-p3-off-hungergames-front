@@ -1,0 +1,39 @@
+.headerNav,
+.headerButton,
+.headerItem {
+  width: 100%;
+}
+.headerNav {
+  max-width: 150px;
+  height: 100%;
+  z-index: 10;
+  background-color: var(--OFFlightBlue);
+}
+.headerList:hover,
+.headerButton:hover,
+.headerItem:hover {
+  cursor: pointer;
+}
+.headerButton {
+  height: 3.25rem;
+  margin-top: 0.75rem;
+  border: none;
+  background-color: transparent;
+}
+.buttonImg {
+  margin: auto;
+  max-height: 100%;
+  max-width: 100%;
+}
+.headerList {
+  width: fit-content;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-gap: 0;
+}
+.headerItem {
+  padding: 0.5rem 1rem;
+  font-size: 1.25rem;
+  background-color: var(--OFFlightBlue);
+}

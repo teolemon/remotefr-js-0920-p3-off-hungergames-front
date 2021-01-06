@@ -62,15 +62,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.main-column {
-  padding: 1.5rem 1.5rem;
-  background-color: #686868;
-  color: #ffffff;
-}
-
-a {
-  color: #ffffff;
-}
-</style>

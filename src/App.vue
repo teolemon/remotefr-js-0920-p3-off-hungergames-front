@@ -1,10 +1,10 @@
 <template>
-  <div>
-
-    <Menu />
-    <sui-segment attached="bottom">
-      <router-view />
-    </sui-segment>
+  <div class="globalContainer">
+    <header>
+      <Menu />
+      <h1>Nom de l'app</h1>
+    </header>
+    <router-view />
 
   </div>
 </template>
@@ -21,13 +21,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.menu-container {
-  margin-bottom: 1rem;
-}
-
-.segment {
-  border: none!important;
-}
-</style>
