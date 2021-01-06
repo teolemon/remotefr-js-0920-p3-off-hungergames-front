@@ -1,24 +1,26 @@
 <template>
-  <div class="ui grid stackable">
-    <div class="five wide column centered">
-      <div class="insight-column">
-        <div
-          class="tag"
-          :class="{ selected: insightType === selectedInsightType }"
-          v-for="insightType of availableInsightTypes"
-          :key="insightType"
-          @click="
+  <section class="questionContainer">
+    <!-- <div>
+      <span
+        class="tag"
+        :class="{ selected: insightType === selectedInsightType }"
+        v-for="insightType of availableInsightTypes"
+        :key="insightType"
+        @click="
             insightType === selectedInsightType ||
               selectInsightType(insightType)
           "
-        >
-          {{ $t("questions." + insightType) }}
-        </div>
-        <div class="ui divider" />
-        <div class="ui hidden divider"></div>
-        <div v-if="currentQuestion">
-          <h3>{{ currentQuestion.question }}</h3>
-          <div v-if="valueTagQuestionsURL">
+      >
+        {{ $t("questions." + insightType) }} |
+      </span>
+    </div> -->
+
+    <div v-if="currentQuestion" class="answerContainer">
+      <div class="questionTopContainer">
+        <article class="currentQuestionContainer">
+          <p class="productQuestion">{{ currentQuestion.question }}</p>
+
+          <div v-if="valueTagQuestionsURL" class="productValue">
             <button class="ui big label" v-on:click="toggleFav">
               {{ currentQuestion.value }}
               <i
@@ -30,67 +32,71 @@
           <div v-else>
             <div class="ui big label">{{ currentQuestion.value }}</div>
           </div>
-          <div class="ui divider hidden"></div>
-          <viewer :options="imageZoomOptions" style="height: 300px">
-            <img
-              :class="[imageRotationClassName]"
-              :src="currentQuestionImageUrl"
-              style="max-height: 300px; max-width: 300px"
-            />
-          </viewer>
-          <div class="ui divider hidden"></div>
-          <div>
-            <button
-              data-inverted
-              data-tooltip="Shortcut: n"
-              class="ui button red annotate"
-              @click="annotate(0)"
-            >
-              {{ $t("questions.no") }}
-            </button>
-            <button
-              data-inverted
-              data-tooltip="Shortcut: k"
-              class="ui button annotate"
-              @click="annotate(-1)"
-            >
-              {{ $t("questions.skip") }}
-            </button>
-            <button
-              data-inverted
-              data-tooltip="Shortcut: o"
-              class="ui button green annotate"
-              @click="annotate(1)"
-            >
-              {{ $t("questions.yes") }}
-            </button>
-          </div>
-        </div>
-        <div class="flex-center" v-else style="margin-top: 100px">
-          <LoadingSpinner :show="loading" />
-          <div v-if="noRemainingQuestion">
-            <h2>{{ $t("questions.no_questions_remaining") }}</h2>
-          </div>
-        </div>
+        </article>
+
+        <article class="progressionContainer">
+          <p>Prochain niveau : 15/25</p>
+        </article>
+      </div>
+
+      <article class="imgContainer">
+        <img :class="[imageRotationClassName]" :src="currentQuestionImageUrl" />
+      </article>
+      <article class="buttonsContainer">
+        <button
+          data-inverted
+          data-tooltip="Shortcut: n"
+          class="ui button red annotate"
+          @click="annotate(0)"
+        >
+          <img class="buttonImg" src="../assets/no.png" alt="Back" />
+        </button>
+        <button
+          data-inverted
+          data-tooltip="Shortcut: k"
+          class="ui button annotate"
+          @click="annotate(-1)"
+        >
+          {{ $t("questions.skip") }}
+        </button>
+        <button class="ui button yellow annotate">
+          <img class="buttonImg" src="../assets/back.png" alt="Back" />
+        </button>
+        <button
+          data-inverted
+          data-tooltip="Shortcut: o"
+          class="ui button green annotate"
+          @click="annotate(1)"
+        >
+          <img class="buttonImg" src="../assets/yes.png" alt="Back" />
+        </button>
+      </article>
+    </div>
+
+    <div v-else>
+      <LoadingSpinner :show="loading" />
+      <div v-if="noRemainingQuestion">
+        <h2>{{ $t("questions.no_questions_remaining") }}</h2>
       </div>
     </div>
-    <div class="six wide column centered">
+
+    <!-- Both divs bellow are hidden but not erased for future use. -->
+    <div class="otherImg">
       <Product :barcode="currentQuestionBarcode" />
     </div>
-    <div class="three wide column annotation-column">
+    <div class="annotationColumn">
       <AnnotationCounter
         :lastAnnotations="lastAnnotations"
         :sessionAnnotatedCount="sessionAnnotatedCount"
       />
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
 import robotoffService from "../robotoff";
 import Product from "../components/Product";
 import LoadingSpinner from "../components/LoadingSpinner";
-
 import AnnotationCounter from "../components/AnnotationCounter";
 
 import {
@@ -305,58 +311,5 @@ export default {
 </script>
 
 <style scoped>
-#value-tag-input {
-  width: 300px;
-  margin-top: 0.5rem;
-  margin-right: 0.5rem;
-}
-
-.tag {
-  background-color: #e8e8e8;
-  display: inline-block;
-  position: relative;
-  padding: 1em 1.5em;
-  margin: 0.3em 0.15em;
-  line-height: 1;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.tag.selected {
-  background-color: #35689d;
-  color: #ffffff;
-}
-
-button.annotate {
-  padding: 2rem 2.5rem;
-}
-
-.flex-center {
-  display: flex;
-  justify-content: center;
-}
-
-.insight-column {
-  text-align: center;
-}
-
-.annotation-column {
-  background-color: #686868;
-}
-
-.rotate-0 {
-  transform: none;
-}
-
-.rotate-90 {
-  transform: rotate(90deg);
-}
-
-.rotate-180 {
-  transform: rotate(180deg);
-}
-
-.rotate-270 {
-  transform: rotate(270deg);
-}
+@import "../components/Style/question.css";
 </style>

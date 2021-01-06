@@ -1,0 +1,94 @@
+.questionContainer,
+.answerContainer {
+  width: 100%;
+  height: 100%;
+}
+
+.imgContainer img {
+  max-height: calc(100vh - 18rem);
+  width: 100%;
+}
+
+.questionContainer {
+  box-sizing: border-box;
+  padding: 0 0.1rem 0.5rem 0.1rem;
+}
+.answerContainer {
+  display: grid;
+  justify-content: center;
+  align-content: space-between;
+  grid-template-columns: 100%;
+  grid-template-rows: max-content max-content max-content;
+  grid-gap: 0;
+}
+.questionTopContainer,
+.buttonsContainer {
+  max-height: 4rem;
+}
+.otherImg {
+  display: none;
+}
+.annotationColumn {
+  display: none;
+}
+.currentQuestionContainer {
+  display: grid;
+  justify-content: space-between;
+  align-items: flex-end;
+  grid-template-columns: 65% 35%;
+  grid-gap: 0;
+  margin-bottom: 0.5rem;
+}
+.productQuestion,
+.productValue,
+.progressionContainer p {
+  font-size: 0.85rem;
+}
+.progressionContainer {
+  margin-bottom: 1rem;
+}
+.progressionContainer p {
+  text-align: center;
+}
+.imgContainer {
+  height: 100%;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+  object-fit: contain;
+}
+
+.buttonsContainer {
+  display: grid;
+  justify-content: space-around;
+  align-items: center;
+  grid-template-columns: 22% 22% 22% 22%;
+  grid-gap: 0;
+}
+.buttonsContainer button {
+  border: none;
+  height: 100%;
+  padding: 0.25rem 0;
+  text-align: center;
+  background-color: var(--OFFlightBlue);
+}
+.buttonsContainer button:hover {
+  cursor: pointer;
+}
+.buttonsContainer button:active {
+  box-shadow: inset 0 0 0.75rem #f9f9f9;
+}
+.buttonsContainer button img {
+  width: 50%;
+  margin: 0 auto;
+}
+.red {
+  background-color: var(--OFFred) !important;
+}
+.yellow {
+  background-color: var(--OFFyellow) !important;
+}
+.green {
+  background-color: var(--OFFgreen) !important;
+}
