@@ -1,6 +1,6 @@
 <template>
   <section class="questionContainer">
-    <div>
+    <!-- <div>
       <span
         class="tag"
         :class="{ selected: insightType === selectedInsightType }"
@@ -10,7 +10,7 @@
       >
         {{ $t("questions." + insightType) }} |
       </span>
-    </div>
+    </div> -->
 
     <div v-if="currentQuestion" class="answerContainer">
       <div class="questionTopContainer">
