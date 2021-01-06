@@ -33,6 +33,7 @@ header {
   grid-gap: 0;
 }
 h1 {
+  box-sizing: border-box;
   padding: 1rem 0.5rem;
   margin: 0;
   font-size: 2.75rem;
