@@ -1,6 +1,6 @@
 <template>
   <section class="questionContainer">
-        <!-- <div
+    <!-- <div
           class="tag"
           :class="{ selected: insightType === selectedInsightType }"
           v-for="insightType of availableInsightTypes"
@@ -9,7 +9,7 @@
         >
           {{ $t("questions." + insightType) }}
         </div> -->
-        <!-- <div class="ui form">
+    <!-- <div class="ui form">
           <div class="ui icon input" id="value-tag-input">
             <input
               class="ui input"
@@ -27,18 +27,18 @@
             <label>{{ $t("questions.popularity_sort") }}</label>
           </div>
         </div> -->
-        <div v-if="currentQuestion"  class="answerContainer">
-          <div class="questionTopContainer">
-            <article class="currentQuestionContainer">
-              <p class="productQuestion">{{ currentQuestion.question }}</p>
-              <p class="productValue">{{ currentQuestion.value }}</p>
-            </article>
-            <article class="progressionContainer">
-              <p>Prochain niveau : 15/25</p>
-            </article>
-          </div>
-          <!-- The two divs bellow are hidden, they handle the brand or category with a link -->
-          <!-- <div v-if="valueTagQuestionsURL.length">
+    <div v-if="currentQuestion" class="answerContainer">
+      <div class="questionTopContainer">
+        <article class="currentQuestionContainer">
+          <p class="productQuestion">{{ currentQuestion.question }}</p>
+          <p class="productValue">{{ currentQuestion.value }}</p>
+        </article>
+        <article class="progressionContainer">
+          <p>Prochain niveau : 15/25</p>
+        </article>
+      </div>
+      <!-- The two divs bellow are hidden, they handle the brand or category with a link -->
+      <!-- <div v-if="valueTagQuestionsURL.length">
             <router-link :to="valueTagQuestionsURL" target="_blank">
               <div class="ui big label">
                 {{ currentQuestion.value }}
@@ -51,48 +51,45 @@
           <div v-else>
             <div class="ui big label">{{ currentQuestion.value }}</div>
           </div> -->
-          <article class="imgContainer">
-            <img
-              :class="[imageRotationClassName]"
-              :src="currentQuestionImageUrl"
-            />
-          </article>
-          <article class="buttonsContainer">
-            <button
-              data-inverted
-              data-tooltip="Shortcut: n"
-              class="ui button red annotate"
-              @click="annotate(0)"
-            >
-              <img class="buttonImg" src="../assets/no.png" alt="Back"/>
-            </button>
-            <button
-              data-inverted
-              data-tooltip="Shortcut: k"
-              class="ui button annotate"
-              @click="annotate(-1)"
-            >
-              {{ $t("questions.skip") }}
-            </button>
-            <button class="ui button yellow annotate">
-              <img class="buttonImg" src="../assets/back.png" alt="Back"/>
-            </button>
-            <button
-              data-inverted
-              data-tooltip="Shortcut: o"
-              class="ui button green annotate"
-              @click="annotate(1)"
-            >
-              <img class="buttonImg" src="../assets/yes.png" alt="Back"/>
-            </button>
-          </article>
-        </div>
-        <div class="flex-center" v-else>
-          <LoadingSpinner :show="loading" />
-          <div v-if="noRemainingQuestion">
-            <h2>{{ $t("questions.no_questions_remaining") }}</h2>
-          </div>
-        </div>
+      <article class="imgContainer">
+        <img :class="[imageRotationClassName]" :src="currentQuestionImageUrl" />
+      </article>
+      <article class="buttonsContainer">
+        <button
+          data-inverted
+          data-tooltip="Shortcut: n"
+          class="ui button red annotate"
+          @click="annotate(0)"
+        >
+          <img class="buttonImg" src="../assets/no.png" alt="Back" />
+        </button>
+        <button
+          data-inverted
+          data-tooltip="Shortcut: k"
+          class="ui button annotate"
+          @click="annotate(-1)"
+        >
+          {{ $t("questions.skip") }}
+        </button>
+        <button class="ui button yellow annotate">
+          <img class="buttonImg" src="../assets/back.png" alt="Back" />
+        </button>
+        <button
+          data-inverted
+          data-tooltip="Shortcut: o"
+          class="ui button green annotate"
+          @click="annotate(1)"
+        >
+          <img class="buttonImg" src="../assets/yes.png" alt="Back" />
+        </button>
+      </article>
+    </div>
+    <div class="flex-center" v-else>
+      <LoadingSpinner :show="loading" />
+      <div v-if="noRemainingQuestion">
+        <h2>{{ $t("questions.no_questions_remaining") }}</h2>
+      </div>
+    </div>
     <!-- Both divs bellow are hidden but not erased for future use. -->
     <div class="otherImg">
       <Product :barcode="currentQuestionBarcode" />
@@ -121,13 +118,13 @@ import {
   NO_QUESTION_LEFT,
   insightTypesNames,
   getInitialInsightType,
-  reformatValueTag
-} from "../utils/utilsQuestionView"
+  reformatValueTag,
+} from "../utils/utilsQuestionView";
 
 export default {
   name: "QuestionView",
   components: { Product, AnnotationCounter, LoadingSpinner },
-  data: function () {
+  data: function() {
     return {
       valueTag: getURLParam("value_tag"),
       valueTagInput: getURLParam("value_tag"),
@@ -153,7 +150,7 @@ export default {
     };
   },
   watch: {
-    valueTagInput: function () {
+    valueTagInput: function() {
       clearTimeout(this.valueTagTimeout);
 
       if (this.valueTagInput.length == 0) {
@@ -169,17 +166,17 @@ export default {
         updateURLParam("value_tag", this.valueTag);
       }, 1000);
     },
-    valueTag: function () {
+    valueTag: function() {
       this.currentQuestion = null;
       this.questionBuffer = [];
       this.loadQuestions();
     },
-    sortByPopularity: function () {
+    sortByPopularity: function() {
       this.currentQuestion = null;
       this.questionBuffer = [];
       this.loadQuestions();
     },
-    selectedInsightType: function () {
+    selectedInsightType: function() {
       this.updateInsightTypeUrlParam();
     },
   },
@@ -212,13 +209,13 @@ export default {
         this.lastAnnotations.shift();
       }
     },
-    selectInsightType: function (insightType) {
+    selectInsightType: function(insightType) {
       this.selectedInsightType = insightType;
       this.currentQuestion = null;
       this.questionBuffer = [];
       this.loadQuestions();
     },
-    annotate: function (annotation) {
+    annotate: function(annotation) {
       if (annotation !== -1) {
         robotoffService.annotate(this.currentQuestion.insight_id, annotation);
         this.updateLastAnnotations(this.currentQuestion, annotation);
@@ -231,7 +228,7 @@ export default {
         this.loadQuestions();
       }
     },
-    updateCurrentQuestion: function () {
+    updateCurrentQuestion: function() {
       this.currentQuestion = null;
       if (this.questionBuffer.length > 0) {
         this.currentQuestion = this.questionBuffer.shift();
@@ -241,7 +238,7 @@ export default {
         );
       }
     },
-    loadQuestions: function () {
+    loadQuestions: function() {
       const sortBy = this.sortByPopularity ? "popular" : "random";
       const count = 10;
       robotoffService
@@ -279,31 +276,31 @@ export default {
     },
   },
   computed: {
-    availableInsightTypes: function () {
+    availableInsightTypes: function() {
       return Object.keys(insightTypesNames);
     },
-    currentQuestionImageUrl: function () {
+    currentQuestionImageUrl: function() {
       if (this.currentQuestion.source_image_url) {
         return this.currentQuestion.source_image_url;
       }
       return "https://static.openfoodfacts.org/images/image-placeholder.png";
     },
-    imageRotationClassName: function () {
+    imageRotationClassName: function() {
       if (this.imageRotation === 90) return "rotate-90";
       if (this.imageRotation === 180) return "rotate-180";
       if (this.imageRotation === 270) return "rotate-270";
       return "rotation-0";
     },
-    loading: function () {
+    loading: function() {
       return !this.noRemainingQuestion && this.currentQuestion == null;
     },
-    noRemainingQuestion: function () {
+    noRemainingQuestion: function() {
       return (
         this.questionBuffer.length == 1 &&
         this.questionBuffer[0] === NO_QUESTION_LEFT
       );
     },
-    currentQuestionBarcode: function () {
+    currentQuestionBarcode: function() {
       if (
         this.currentQuestion !== null &&
         this.currentQuestion !== NO_QUESTION_LEFT
@@ -313,7 +310,7 @@ export default {
         return null;
       }
     },
-    valueTagQuestionsURL: function () {
+    valueTagQuestionsURL: function() {
       if (
         this.currentQuestion !== null &&
         this.currentQuestion !== NO_QUESTION_LEFT &&
@@ -334,7 +331,7 @@ export default {
     this.updateInsightTypeUrlParam();
     this.loadQuestions();
     const vm = this;
-    window.addEventListener("keyup", function (event) {
+    window.addEventListener("keyup", function(event) {
       if (event.target.nodeName == "BODY") {
         if (event.key === "k") vm.annotate(-1);
         if (event.key === "n") vm.annotate(0);
