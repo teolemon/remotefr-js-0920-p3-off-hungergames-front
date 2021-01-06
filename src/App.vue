@@ -1,10 +1,10 @@
 <template>
-  <div>
-
-    <Menu />
-    <sui-segment attached="bottom">
-      <router-view />
-    </sui-segment>
+  <div class="globalContainer">
+    <header>
+      <Menu />
+      <h1>Nom de l'app</h1>
+    </header>
+    <router-view />
 
   </div>
 </template>
