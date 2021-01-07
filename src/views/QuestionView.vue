@@ -15,7 +15,10 @@
       </span>
     </div> -->
 
-    <div v-if="currentQuestion" class="answerContainer">
+    <div
+      v-if="currentQuestion && questionBuffer.length"
+      class="answerContainer"
+    >
       <div class="questionTopContainer">
         <article class="currentQuestionContainer">
           <p class="productQuestion">{{ currentQuestion.question }}</p>
@@ -103,7 +106,7 @@ import {
   updateURLParam,
   getURLParam,
   NO_QUESTION_LEFT,
-  insightTypesNames,
+  // insightTypesNames,
   getInitialInsightType,
   reformatValueTag,
 } from "../utils/utilsQuestionView";
@@ -172,16 +175,16 @@ export default {
         annotation,
       });
 
-      if (this.lastAnnotations.length > 10) {
-        this.lastAnnotations.shift();
-      }
+      if (this.lastAnnotations.length > 10) this.lastAnnotations.shift();
     },
-    selectInsightType: function (insightType) {
-      this.selectedInsightType = insightType;
-      this.valueTag = "";
-      this.is_fav = false;
-    },
+    // selectInsightType: function (insightType) {
+    //   this.selectedInsightType = insightType;
+    //   this.valueTag = "";
+    //   this.is_fav = false;
+    // },
     annotate: function (annotation) {
+      this.seenInsightIds.add(this.currentQuestion.insight_id);
+
       if (annotation !== -1) {
         robotoffService.annotate(this.currentQuestion.insight_id, annotation);
         this.updateLastAnnotations(this.currentQuestion, annotation);
@@ -189,22 +192,25 @@ export default {
       }
       this.updateCurrentQuestion();
 
-      if (!this.noRemainingQuestion && this.questionBuffer.length <= 2) {
+      if (!this.noRemainingQuestion && this.questionBuffer.length <= 5)
         this.loadQuestions();
-      }
     },
     updateCurrentQuestion: function () {
       this.currentQuestion = null;
-      if (this.questionBuffer.length > 0) {
+      if (this.questionBuffer.length > 0)
         this.currentQuestion = this.questionBuffer.shift();
-      } else {
+      else {
         window.console.error(
           "question buffer is empty, cannot update current question!"
         );
       }
     },
+    addNoQuestionLeft: function () {
+      if (!this.questionBuffer.includes(NO_QUESTION_LEFT))
+        this.questionBuffer.push(NO_QUESTION_LEFT);
+    },
     loadQuestions: function () {
-      const count = 10;
+      const count = 15;
       robotoffService
         .questions(
           this.sortBy,
@@ -215,23 +221,16 @@ export default {
           count
         )
         .then((result) => {
-          if (result.data.questions.length == 0) {
-            if (!this.questionBuffer.includes(NO_QUESTION_LEFT)) {
-              this.questionBuffer.push(NO_QUESTION_LEFT);
-            }
-            return;
-          }
+          let nbNewQuestion = 0;
           result.data.questions.forEach((q) => {
             if (!this.seenInsightIds.has(q.insight_id)) {
               this.questionBuffer.push(q);
-              this.seenInsightIds.add(q.insight_id);
+              nbNewQuestion++;
             }
           });
-          if (result.data.questions.length < count) {
-            if (!this.questionBuffer.includes(NO_QUESTION_LEFT)) {
-              this.questionBuffer.push(NO_QUESTION_LEFT);
-            }
-          }
+          if (!nbNewQuestion && this.questionBuffer.length <= 2)
+            this.addNoQuestionLeft();
+
           if (this.currentQuestion === null) {
             this.updateCurrentQuestion();
           }
@@ -239,9 +238,9 @@ export default {
     },
   },
   computed: {
-    availableInsightTypes: function () {
-      return Object.keys(insightTypesNames);
-    },
+    // availableInsightTypes: function () {
+    //   return Object.keys(insightTypesNames);
+    // },
     currentQuestionImageUrl: function () {
       if (this.currentQuestion.source_image_url) {
         return this.currentQuestion.source_image_url;
@@ -259,8 +258,7 @@ export default {
     },
     noRemainingQuestion: function () {
       return (
-        this.questionBuffer.length == 1 &&
-        this.questionBuffer[0] === NO_QUESTION_LEFT
+        !this.questionBuffer.length && this.currentQuestion === NO_QUESTION_LEFT
       );
     },
     currentQuestionBarcode: function () {
