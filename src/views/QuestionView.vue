@@ -304,7 +304,7 @@ export default {
         if (!newQuery["value_tag"]) this.currentQuestion = null;
         this.loadQuestions();
       },
-      { immediate: true, deep: true }
+      { deep: true }
     );
   },
 };
