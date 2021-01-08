@@ -39,7 +39,7 @@
 
         <AnnotationCounter
           class="progressionContainer"
-          :lastAnnotations="lastAnnotations"
+          :currentInsightId="currentQuestion.insight_id"
           :sessionAnnotatedCount="sessionAnnotatedCount"
         />
       </div>
@@ -94,6 +94,7 @@
 
 <script>
 import robotoffService from "../robotoff";
+import { getUserInsightLocalStorage } from "../utils";
 import Product from "../components/Product";
 import LoadingSpinner from "../components/LoadingSpinner";
 import AnnotationCounter from "../components/AnnotationCounter";
@@ -124,11 +125,11 @@ export default {
       valueTagTimeout: null,
       currentQuestion: null,
       questionBuffer: [],
-      lastAnnotations: [],
+      // lastAnnotations: [],
       sessionAnnotatedCount: 0,
       selectedInsightType: getInitialInsightType(),
       imageRotation: 0,
-      seenInsightIds: new Set(),
+      seenInsightIds: null,
       brandFilter: getURLParam("brand"),
       countryFilter: getURLParam("country"),
       imageZoomOptions: {
@@ -165,14 +166,14 @@ export default {
         this.imageRotation = 0;
       }
     },
-    updateLastAnnotations(question, annotation) {
-      this.lastAnnotations.push({
-        question,
-        annotation,
-      });
+    // updateLastAnnotations(question, annotation) {
+    //   this.lastAnnotations.push({
+    //     question,
+    //     annotation,
+    //   });
 
-      if (this.lastAnnotations.length > 10) this.lastAnnotations.shift();
-    },
+    // if (this.lastAnnotations.length > 10) this.lastAnnotations.shift();
+    // },
     // selectInsightType: function (insightType) {
     //   this.selectedInsightType = insightType;
     //   this.valueTag = "";
@@ -183,7 +184,7 @@ export default {
 
       if (annotation !== -1) {
         robotoffService.annotate(this.currentQuestion.insight_id, annotation);
-        this.updateLastAnnotations(this.currentQuestion, annotation);
+        // this.updateLastAnnotations(this.currentQuestion, annotation);
         this.sessionAnnotatedCount += 1;
       }
       this.updateCurrentQuestion();
@@ -277,7 +278,10 @@ export default {
   },
   mounted() {
     updateURLParam("type", this.selectedInsightType);
+    const userids = getUserInsightLocalStorage();
+    this.seenInsightIds = new Set(userids.ids);
     this.loadQuestions();
+
     const vm = this;
     window.addEventListener("keyup", function (event) {
       if (event.target.nodeName == "BODY") {
