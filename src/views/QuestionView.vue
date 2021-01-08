@@ -37,9 +37,11 @@
           </div>
         </article>
 
-        <article class="progressionContainer">
-          <p>Prochain niveau : 15/25</p>
-        </article>
+        <AnnotationCounter
+          class="progressionContainer"
+          :lastAnnotations="lastAnnotations"
+          :sessionAnnotatedCount="sessionAnnotatedCount"
+        />
       </div>
 
       <article class="imgContainer">
@@ -86,12 +88,6 @@
     <!-- Both divs bellow are hidden but not erased for future use. -->
     <div class="otherImg">
       <Product :barcode="currentQuestionBarcode" />
-    </div>
-    <div class="annotationColumn">
-      <AnnotationCounter
-        :lastAnnotations="lastAnnotations"
-        :sessionAnnotatedCount="sessionAnnotatedCount"
-      />
     </div>
   </section>
 </template>

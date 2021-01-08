@@ -1,22 +1,10 @@
 <template>
-  <div class="main-column">
-    <h3>{{ $t("questions.annotations") }}</h3>
+  <article>
     <p>
-      {{ $t("questions.annotated_annotations") }}:
-      <strong>{{ annotatedCount }}</strong>
+      Prochain niveau : {{ annotatedCount }} /
+      {{ levelToReach }}
     </p>
-    <div class="ui divider" />
-    <h3>{{ $t("questions.last_annotations") }}</h3>
-    <div
-      v-for="annotation in sortedLastAnnotations"
-      :key="annotation.question.insight_id"
-    >
-      {{ annotation.question.insight_type }}: {{ annotation.question.value }}
-      <i v-if="annotation.annotation == 1" class="check green icon"></i>
-      <i v-else-if="annotation.annotation == -1" class="question icon"></i>
-      <i v-else-if="annotation.annotation == 0" class="times red icon"></i>
-    </div>
-  </div>
+  </article>
 </template>
 
 <script>
@@ -39,13 +27,16 @@ export default {
     return {
       username: offService.getUsername(),
       historyAnnotatedCount: 0,
+      levelToReach: 20,
     };
   },
+  updated() {
+    if (this.annotatedCount === this.levelToReach) {
+      alert(`Palier ${this.levelToReach} atteint !! Bravo`);
+      this.levelToReach *= 2;
+    }
+  },
   computed: {
-    sortedLastAnnotations: function () {
-      const lastAnnotations = this.lastAnnotations.slice();
-      return lastAnnotations.reverse();
-    },
     annotatedCount: function () {
       return this.historyAnnotatedCount + this.sessionAnnotatedCount;
     },
