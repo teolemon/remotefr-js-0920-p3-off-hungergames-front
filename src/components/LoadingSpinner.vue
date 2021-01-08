@@ -17,5 +17,5 @@ export default {
 </script>
 
 <style scoped>
-@import "../components/Style/loadingSpinner.css";
+@import "../components/styles/loadingSpinner.css";
 </style>

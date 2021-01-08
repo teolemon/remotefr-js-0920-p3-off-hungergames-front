@@ -99,5 +99,5 @@ export default {
 };
 </script>
 <style scoped>
-@import "./Style/menu.css";
+@import "./styles/menu.css";
 </style>

@@ -309,5 +309,5 @@ export default {
 </script>
 
 <style scoped>
-@import "../components/Style/question.css";
+@import "../components/styles/question.css";
 </style>
