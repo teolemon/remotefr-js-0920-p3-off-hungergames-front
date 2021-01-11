@@ -1,56 +1,49 @@
 <template>
   <section class="questionContainer">
-    <!-- <div
-          class="tag"
-          :class="{ selected: insightType === selectedInsightType }"
-          v-for="insightType of availableInsightTypes"
-          :key="insightType"
-          @click="selectInsightType(insightType)"
-        >
-          {{ $t("questions." + insightType) }}
-        </div> -->
-    <!-- <div class="ui form">
-          <div class="ui icon input" id="value-tag-input">
-            <input
-              class="ui input"
-              :placeholder="$t('questions.value_search')"
-              v-model="valueTagInput"
-            />
-            <i
-              @click="clearValueTagInput()"
-              v-if="valueTagInput"
-              class="times link icon"
-            ></i>
-          </div>
-          <div class="ui toggle checkbox">
-            <input v-model="sortByPopularity" type="checkbox" name="sortBy" />
-            <label>{{ $t("questions.popularity_sort") }}</label>
-          </div>
-        </div> -->
-    <div v-if="currentQuestion" class="answerContainer">
+    <!-- <div>
+      <span
+        class="tag"
+        :class="{ selected: insightType === selectedInsightType }"
+        v-for="insightType of availableInsightTypes"
+        :key="insightType"
+        @click="
+            insightType === selectedInsightType ||
+              selectInsightType(insightType)
+          "
+      >
+        {{ $t("questions." + insightType) }} |
+      </span>
+    </div> -->
+
+    <div
+      v-if="currentQuestion && questionBuffer.length"
+      class="answerContainer"
+    >
       <div class="questionTopContainer">
         <article class="currentQuestionContainer">
           <p class="productQuestion">{{ currentQuestion.question }}</p>
-          <p class="productValue">{{ currentQuestion.value }}</p>
-        </article>
-        <article class="progressionContainer">
-          <p>Prochain niveau : 15/25</p>
-        </article>
-      </div>
-      <!-- The two divs bellow are hidden, they handle the brand or category with a link -->
-      <!-- <div v-if="valueTagQuestionsURL.length">
-            <router-link :to="valueTagQuestionsURL" target="_blank">
-              <div class="ui big label">
-                {{ currentQuestion.value }}
-                <i
-                  class="external alternate icon small blue"
-                ></i>
-              </div>
-            </router-link>
+
+          <div v-if="valueTagQuestionsURL" class="productValue">
+            <button class="ui big label" v-on:click="toggleFav">
+              {{ currentQuestion.value }}
+              <i
+                v-bind:class="[is_fav ? 'fas fa-star' : 'far fa-star']"
+                style="margin-left: 0.5rem"
+              ></i>
+            </button>
           </div>
           <div v-else>
             <div class="ui big label">{{ currentQuestion.value }}</div>
-          </div> -->
+          </div>
+        </article>
+
+        <AnnotationCounter
+          class="progressionContainer"
+          :currentInsightId="currentQuestion.insight_id"
+          :sessionAnnotatedCount="sessionAnnotatedCount"
+        />
+      </div>
+
       <article class="imgContainer">
         <img :class="[imageRotationClassName]" :src="currentQuestionImageUrl" />
       </article>
@@ -84,39 +77,33 @@
         </button>
       </article>
     </div>
-    <div class="flex-center" v-else>
+
+    <div v-else>
       <LoadingSpinner :show="loading" />
       <div v-if="noRemainingQuestion">
         <h2>{{ $t("questions.no_questions_remaining") }}</h2>
       </div>
     </div>
+
     <!-- Both divs bellow are hidden but not erased for future use. -->
     <div class="otherImg">
       <Product :barcode="currentQuestionBarcode" />
-    </div>
-    <div class="annotationColumn">
-      <AnnotationCounter
-        :remainingCount="remainingQuestionCount"
-        :lastAnnotations="lastAnnotations"
-        :sessionAnnotatedCount="sessionAnnotatedCount"
-      />
     </div>
   </section>
 </template>
 
 <script>
 import robotoffService from "../robotoff";
+import { getUserInsightLocalStorage } from "../utils";
 import Product from "../components/Product";
 import LoadingSpinner from "../components/LoadingSpinner";
-
 import AnnotationCounter from "../components/AnnotationCounter";
 
 import {
   updateURLParam,
-  deleteURLParam,
   getURLParam,
   NO_QUESTION_LEFT,
-  insightTypesNames,
+  // insightTypesNames,
   getInitialInsightType,
   reformatValueTag,
 } from "../utils/utilsQuestionView";
@@ -124,21 +111,25 @@ import {
 export default {
   name: "QuestionView",
   components: { Product, AnnotationCounter, LoadingSpinner },
-  data: function() {
+  props: {
+    sortBy: {
+      type: String,
+      default: "random",
+      validator: (prop) => ["random", "popular"].includes(prop),
+    },
+  },
+  data: function () {
     return {
+      is_fav: getURLParam("value_tag") ? true : false,
       valueTag: getURLParam("value_tag"),
-      valueTagInput: getURLParam("value_tag"),
       valueTagTimeout: null,
       currentQuestion: null,
       questionBuffer: [],
-      remainingQuestionCount: 0,
-      lastAnnotations: [],
+      // lastAnnotations: [],
       sessionAnnotatedCount: 0,
-      insightTypesNames: insightTypesNames,
       selectedInsightType: getInitialInsightType(),
       imageRotation: 0,
-      seenInsightIds: new Set(),
-      sortByPopularity: false,
+      seenInsightIds: null,
       brandFilter: getURLParam("brand"),
       countryFilter: getURLParam("country"),
       imageZoomOptions: {
@@ -149,40 +140,19 @@ export default {
       },
     };
   },
-  watch: {
-    valueTagInput: function() {
+  methods: {
+    toggleFav() {
       clearTimeout(this.valueTagTimeout);
 
-      if (this.valueTagInput.length == 0) {
-        this.valueTag = "";
-        deleteURLParam("value_tag");
-        return;
+      if (this.is_fav) this.valueTag = "";
+      else {
+        this.valueTagTimeout = setTimeout(() => {
+          this.valueTag = reformatValueTag(
+            this.currentQuestion.value.toLowerCase()
+          );
+        }, 500);
       }
-
-      const valueTagInput = this.valueTagInput.toLowerCase();
-
-      this.valueTagTimeout = setTimeout(() => {
-        this.valueTag = reformatValueTag(valueTagInput);
-        updateURLParam("value_tag", this.valueTag);
-      }, 1000);
-    },
-    valueTag: function() {
-      this.currentQuestion = null;
-      this.questionBuffer = [];
-      this.loadQuestions();
-    },
-    sortByPopularity: function() {
-      this.currentQuestion = null;
-      this.questionBuffer = [];
-      this.loadQuestions();
-    },
-    selectedInsightType: function() {
-      this.updateInsightTypeUrlParam();
-    },
-  },
-  methods: {
-    clearValueTagInput() {
-      this.valueTagInput = "";
+      this.is_fav = !this.is_fav;
     },
     rotateImage() {
       window.console.log(this.imageRotation);
@@ -196,54 +166,51 @@ export default {
         this.imageRotation = 0;
       }
     },
-    updateInsightTypeUrlParam() {
-      updateURLParam("type", this.selectedInsightType);
-    },
-    updateLastAnnotations(question, annotation) {
-      this.lastAnnotations.push({
-        question,
-        annotation,
-      });
+    // updateLastAnnotations(question, annotation) {
+    //   this.lastAnnotations.push({
+    //     question,
+    //     annotation,
+    //   });
 
-      if (this.lastAnnotations.length > 10) {
-        this.lastAnnotations.shift();
-      }
-    },
-    selectInsightType: function(insightType) {
-      this.selectedInsightType = insightType;
-      this.currentQuestion = null;
-      this.questionBuffer = [];
-      this.loadQuestions();
-    },
-    annotate: function(annotation) {
+    // if (this.lastAnnotations.length > 10) this.lastAnnotations.shift();
+    // },
+    // selectInsightType: function (insightType) {
+    //   this.selectedInsightType = insightType;
+    //   this.valueTag = "";
+    //   this.is_fav = false;
+    // },
+    annotate: function (annotation) {
+      this.seenInsightIds.add(this.currentQuestion.insight_id);
+
       if (annotation !== -1) {
         robotoffService.annotate(this.currentQuestion.insight_id, annotation);
-        this.updateLastAnnotations(this.currentQuestion, annotation);
-        this.remainingQuestionCount -= 1;
+        // this.updateLastAnnotations(this.currentQuestion, annotation);
         this.sessionAnnotatedCount += 1;
       }
       this.updateCurrentQuestion();
 
-      if (!this.noRemainingQuestion && this.questionBuffer.length <= 2) {
+      if (!this.noRemainingQuestion && this.questionBuffer.length <= 5)
         this.loadQuestions();
-      }
     },
-    updateCurrentQuestion: function() {
+    updateCurrentQuestion: function () {
       this.currentQuestion = null;
-      if (this.questionBuffer.length > 0) {
+      if (this.questionBuffer.length > 0)
         this.currentQuestion = this.questionBuffer.shift();
-      } else {
+      else {
         window.console.error(
           "question buffer is empty, cannot update current question!"
         );
       }
     },
-    loadQuestions: function() {
-      const sortBy = this.sortByPopularity ? "popular" : "random";
-      const count = 10;
+    addNoQuestionLeft: function () {
+      if (!this.questionBuffer.includes(NO_QUESTION_LEFT))
+        this.questionBuffer.push(NO_QUESTION_LEFT);
+    },
+    loadQuestions: function () {
+      const count = 15;
       robotoffService
         .questions(
-          sortBy,
+          this.sortBy,
           this.selectedInsightType,
           this.valueTag,
           this.brandFilter,
@@ -251,24 +218,16 @@ export default {
           count
         )
         .then((result) => {
-          this.remainingQuestionCount = result.data.count;
-          if (result.data.questions.length == 0) {
-            if (!this.questionBuffer.includes(NO_QUESTION_LEFT)) {
-              this.questionBuffer.push(NO_QUESTION_LEFT);
-            }
-            return;
-          }
+          let nbNewQuestion = 0;
           result.data.questions.forEach((q) => {
             if (!this.seenInsightIds.has(q.insight_id)) {
               this.questionBuffer.push(q);
-              this.seenInsightIds.add(q.insight_id);
+              nbNewQuestion++;
             }
           });
-          if (result.data.questions.length < count) {
-            if (!this.questionBuffer.includes(NO_QUESTION_LEFT)) {
-              this.questionBuffer.push(NO_QUESTION_LEFT);
-            }
-          }
+          if (!nbNewQuestion && this.questionBuffer.length <= 2)
+            this.addNoQuestionLeft();
+
           if (this.currentQuestion === null) {
             this.updateCurrentQuestion();
           }
@@ -276,31 +235,30 @@ export default {
     },
   },
   computed: {
-    availableInsightTypes: function() {
-      return Object.keys(insightTypesNames);
-    },
-    currentQuestionImageUrl: function() {
+    // availableInsightTypes: function () {
+    //   return Object.keys(insightTypesNames);
+    // },
+    currentQuestionImageUrl: function () {
       if (this.currentQuestion.source_image_url) {
         return this.currentQuestion.source_image_url;
       }
       return "https://static.openfoodfacts.org/images/image-placeholder.png";
     },
-    imageRotationClassName: function() {
+    imageRotationClassName: function () {
       if (this.imageRotation === 90) return "rotate-90";
       if (this.imageRotation === 180) return "rotate-180";
       if (this.imageRotation === 270) return "rotate-270";
       return "rotation-0";
     },
-    loading: function() {
+    loading: function () {
       return !this.noRemainingQuestion && this.currentQuestion == null;
     },
-    noRemainingQuestion: function() {
+    noRemainingQuestion: function () {
       return (
-        this.questionBuffer.length == 1 &&
-        this.questionBuffer[0] === NO_QUESTION_LEFT
+        !this.questionBuffer.length && this.currentQuestion === NO_QUESTION_LEFT
       );
     },
-    currentQuestionBarcode: function() {
+    currentQuestionBarcode: function () {
       if (
         this.currentQuestion !== null &&
         this.currentQuestion !== NO_QUESTION_LEFT
@@ -310,28 +268,22 @@ export default {
         return null;
       }
     },
-    valueTagQuestionsURL: function() {
-      if (
+    valueTagQuestionsURL: function () {
+      return (
         this.currentQuestion !== null &&
         this.currentQuestion !== NO_QUESTION_LEFT &&
         this.selectedInsightType === "brand"
-      ) {
-        const urlParams = new URLSearchParams();
-        urlParams.append("type", this.selectedInsightType);
-        urlParams.append(
-          "value_tag",
-          reformatValueTag(this.currentQuestion.value)
-        );
-        return `/questions?${urlParams.toString()}`;
-      }
-      return "";
+      );
     },
   },
   mounted() {
-    this.updateInsightTypeUrlParam();
+    updateURLParam("type", this.selectedInsightType);
+    const userids = getUserInsightLocalStorage();
+    this.seenInsightIds = new Set(userids.ids);
     this.loadQuestions();
+
     const vm = this;
-    window.addEventListener("keyup", function(event) {
+    window.addEventListener("keyup", function (event) {
       if (event.target.nodeName == "BODY") {
         if (event.key === "k") vm.annotate(-1);
         if (event.key === "n") vm.annotate(0);
@@ -339,10 +291,23 @@ export default {
         if (event.key === "p") vm.rotateImage();
       }
     });
+    this.$watch(
+      (vm) => ({ type: vm.selectedInsightType, value_tag: vm.valueTag }),
+      (newQuery, oldQuery) => {
+        for (const nameParam in newQuery) {
+          if (!oldQuery || newQuery[nameParam] !== oldQuery[nameParam])
+            updateURLParam(nameParam, newQuery[nameParam]);
+        }
+        this.questionBuffer = [];
+        if (!newQuery["value_tag"]) this.currentQuestion = null;
+        this.loadQuestions();
+      },
+      { deep: true }
+    );
   },
 };
 </script>
 
 <style scoped>
-@import "../components/Style/question.css";
+@import "../components/styles/question.css";
 </style>

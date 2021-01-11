@@ -1,33 +1,20 @@
 const updateURLParam = (key, value) => {
   const urlParams = new URLSearchParams(window.location.search);
-  urlParams.set(key, value);
-  const newRelativePathQuery =
-    window.location.pathname + "?" + urlParams.toString();
-  history.pushState(null, "", newRelativePathQuery);
-};
 
-const deleteURLParam = (key) => {
-  const urlParams = new URLSearchParams(window.location.search);
-
-  if (!urlParams.has(key)) {
-    return;
-  }
-
-  urlParams.delete(key);
+  if (!urlParams.has(key) && !value) return;
+  if (value) urlParams.set(key, value);
+  else urlParams.delete(key);
 
   const newRelativePathQuery =
     window.location.pathname +
     (urlParams.toString().length ? `?${urlParams.toString()}` : "");
-
   history.pushState(null, "", newRelativePathQuery);
 };
 
 const getURLParam = (key) => {
   const urlParams = new URLSearchParams(window.location.search);
 
-  if (!urlParams.has(key)) {
-    return "";
-  }
+  if (!urlParams.has(key)) return "";
 
   return urlParams.get(key);
 };
@@ -38,7 +25,6 @@ const insightTypesNames = {
   label: "label",
   category: "category",
   brand: "brand",
-  product_weight: "product weight",
 };
 
 const randomInsightTypeChoices = ["label", "category", "brand"];
@@ -87,15 +73,13 @@ const reformatValueTag = (value) => {
   return output;
 };
 
-
 export {
   updateURLParam,
-  deleteURLParam,
   getURLParam,
   NO_QUESTION_LEFT,
   insightTypesNames,
   getInitialInsightType,
   getRandomInsightType,
   reformatTagMapping,
-  reformatValueTag
-}
+  reformatValueTag,
+};

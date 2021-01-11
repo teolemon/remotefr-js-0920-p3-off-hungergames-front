@@ -1,77 +1,58 @@
 <template>
-  <div class="main-column">
-    <h3>{{$t('questions.annotations')}}</h3>
+  <article>
     <p>
-      {{$t('questions.remaining_annotations')}}
-      <strong>{{ remainingCount }}</strong>
+      Prochain niveau : {{ annotatedCount }} /
+      {{ levelToReach }}
     </p>
-    <p>
-      {{$t('questions.annotated_annotations')}}:
-      <strong>{{ annotatedCount }}</strong>
-    </p>
-    <div class="ui divider" />
-    <h3>{{$t('questions.last_annotations')}}</h3>
-    <div v-for="annotation in sortedLastAnnotations" :key="annotation.question.insight_id">
-      <a
-        target="_blank"
-        :href="getProductUrl(annotation.question.barcode)"
-      >{{ annotation.question.insight_type }}: {{ annotation.question.value }}</a>
-      <i v-if="annotation.annotation == 1" class="check green icon"></i>
-      <i v-else-if="annotation.annotation == -1" class="question icon"></i>
-      <i v-else-if="annotation.annotation == 0" class="times red icon"></i>
-    </div>
-  </div>
+  </article>
 </template>
 
 <script>
-import robotoffService from "../robotoff";
-import offService from "../off";
+import {
+  getUserInsightLocalStorage,
+  saveUserInsightLocalStorage,
+} from "../utils";
 
 export default {
   name: "AnnotationCounter",
   props: {
-    remainingCount: {
-      type: Number,
-      required: true
-    },
-    lastAnnotations: {
-      type: Array,
-      required: true
-    },
     sessionAnnotatedCount: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
+    currentInsightId: {
+      type: String,
+      required: true,
+    },
   },
-  data: function() {
+  data: function () {
     return {
-      username: offService.getUsername(),
-      historyAnnotatedCount: 0
+      historyAnnotatedCount: 0,
+      levelToReach: 20,
     };
   },
-  methods: {
-    getProductUrl: function(barcode) {
-      return offService.getProductUrl(barcode);
-    }
+  watch: {
+    sessionAnnotatedCount() {
+      if (this.annotatedCount === this.levelToReach) {
+        alert(`Palier ${this.levelToReach} atteint !! Bravo`);
+        this.levelToReach *= 2;
+      }
+      saveUserInsightLocalStorage(
+        this.annotatedCount,
+        this.levelToReach,
+        this.currentInsightId
+      );
+    },
   },
   computed: {
-    sortedLastAnnotations: function() {
-      const lastAnnotations = this.lastAnnotations.slice();
-      return lastAnnotations.reverse();
-    },
-    annotatedCount: function() {
+    annotatedCount: function () {
       return this.historyAnnotatedCount + this.sessionAnnotatedCount;
-    }
+    },
   },
   mounted() {
-    if (this.username.length) {
-      robotoffService
-        .getUserStatistics(this.username)
-        .then(result => {
-          this.historyAnnotatedCount = result.data.count.annotations;
-        })
-        .catch(error => window.console.log(error));
-    }
-  }
+    const userInsightLocalStorage = getUserInsightLocalStorage();
+    this.historyAnnotatedCount = userInsightLocalStorage.count;
+    this.levelToReach = userInsightLocalStorage.level;
+  },
 };
 </script>
