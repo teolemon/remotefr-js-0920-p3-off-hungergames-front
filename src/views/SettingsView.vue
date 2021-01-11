@@ -1,12 +1,10 @@
 <template>
-  <section class="questionContainer">
-    <div>
+  <section class="settingsContainer">
       <h2>{{ $t("settings.settings") }}</h2>
       <form v-on:submit.prevent="search">
-        <div>
           <div>
-            <div>{{ $t("settings.language") }}</div>
-            <select v-model="selectedLang">
+            <label>{{ $t("settings.language") }}</label>
+            <select v-model="selectedLang" class="langSelector">
               <option
                 v-for="(lang, i) in langs"
                 :key="`Lang${i}`"
@@ -16,10 +14,8 @@
               </option>
             </select>
           </div>
-        </div>
         <button @click="saveLang">{{ $t("settings.save") }}</button>
       </form>
-    </div>
   </section>
 </template>
 
@@ -44,3 +40,7 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+@import "../components/styles/settings.css";
+</style>
