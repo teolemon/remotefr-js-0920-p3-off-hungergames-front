@@ -15,10 +15,7 @@
       </span>
     </div> -->
 
-    <div
-      v-if="currentQuestion && questionBuffer.length"
-      class="answerContainer"
-    >
+    <div v-if="currentQuestion && !noRemainingQuestion" class="answerContainer">
       <div class="questionTopContainer">
         <article class="currentQuestionContainer">
           <p class="productQuestion">{{ currentQuestion.question }}</p>
