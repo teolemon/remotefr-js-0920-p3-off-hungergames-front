@@ -1,20 +1,18 @@
 <template>
   <section class="settingsContainer">
-      <h2>{{ $t("settings.settings") }}</h2>
-      <form v-on:submit.prevent="search">
-          <div>
-            <label>{{ $t("settings.language") }}</label>
-            <select v-model="selectedLang" class="langSelector">
-              <option
-                v-for="(lang, i) in langs"
-                :key="`Lang${i}`"
-                :value="lang"
-              >
-                {{ lang.toUpperCase() }}
-              </option>
-            </select>
-          </div>
-        <button @click="saveLang">{{ $t("settings.save") }}</button>
+      <h2 class="settingsTitle">{{ $t("settings.settings") }}</h2>
+      <form v-on:submit.prevent="search" class="selectorForm">
+            <label for="langSelector" class="langLabel">{{ $t("settings.language") }}</label>
+              <select v-model="selectedLang" id="langSelector">
+                <option
+                  v-for="(lang, i) in langs"
+                  :key="`Lang${i}`"
+                  :value="lang"
+                >
+                  {{ lang.toUpperCase() }}
+                </option>
+              </select>
+        <button @click="saveLang" class="langButton">{{ $t("settings.save") }}</button>
       </form>
   </section>
 </template>
