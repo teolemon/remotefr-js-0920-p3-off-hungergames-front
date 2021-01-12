@@ -51,18 +51,18 @@
           class="ui button red annotate"
           @click="annotate(0)"
         >
-          <img class="buttonImg" src="../assets/no.png" alt="Back" />
+          <img class="buttonImg" src="../assets/no.svg" alt="No" />
         </button>
         <button
           data-inverted
           data-tooltip="Shortcut: k"
-          class="ui button annotate"
+          class="ui button blue annotate"
           @click="annotate(-1)"
         >
           {{ $t("questions.skip") }}
         </button>
         <button class="ui button yellow annotate">
-          <img class="buttonImg" src="../assets/back.png" alt="Back" />
+          <img class="buttonImg" src="../assets/back.svg" alt="Back" />
         </button>
         <button
           data-inverted
@@ -70,7 +70,7 @@
           class="ui button green annotate"
           @click="annotate(1)"
         >
-          <img class="buttonImg" src="../assets/yes.png" alt="Back" />
+          <img class="buttonImg" src="../assets/yes.svg" alt="Yes" />
         </button>
       </article>
     </div>
