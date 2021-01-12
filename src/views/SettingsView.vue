@@ -2,7 +2,7 @@
   <section class="questionContainer">
     <div>
       <h2>{{ $t("settings.settings") }}</h2>
-      <form v-on:submit.prevent="search">
+      <form>
         <div>
           <div>
             <div>{{ $t("settings.language") }}</div>
@@ -30,14 +30,14 @@ import messages from "../i18n/messages";
 export default {
   name: "SettingsView",
   props: [],
-  data: function () {
+  data: function() {
     return {
       selectedLang: this.$i18n.locale,
       langs: Object.keys(messages),
     };
   },
   methods: {
-    saveLang: function () {
+    saveLang: function() {
       this.$i18n.locale = this.selectedLang;
       localSettings.update("lang", this.$i18n.locale);
     },
