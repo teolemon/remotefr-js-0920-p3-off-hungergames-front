@@ -1,8 +1,8 @@
 {
   "questions": {
-    "category": "kategorija",
-    "label": "oznaka",
-    "brand": "brend",
+    "category": "категорија",
+    "label": "label",
+    "brand": "бренд",
     "brands": "Брендови",
     "ingredients": "Sastojci",
     "product_weight": "product weight",
@@ -28,7 +28,7 @@
     "logos": "Logos",
     "manage": "Manage",
     "insights": "Insights",
-    "nutritions": "Hranljiva vrednost",
+    "nutritions": "Nutrition facts",
     "settings": "@:settings.settings"
   },
   "insights": {
@@ -50,7 +50,7 @@
     "skipped": "Skipped (-1)",
     "rejected": "Rejected (0)",
     "accepted": "Accepted (1)",
-    "search": "Pretraži",
+    "search": "Pretraživanje",
     "count": "Count",
     "id": "Id",
     "value": "Value",
@@ -70,7 +70,7 @@
     "label": "Oznaka",
     "brand": "Brend",
     "packager_code": "Packager code",
-    "packaging": "Ambalaža",
+    "packaging": "Packaging",
     "qr_code": "QR code",
     "category": "Kategorija",
     "nutrition_label": "Nutrition label",
@@ -81,11 +81,11 @@
     "full_image": "Full image",
     "update": "Update",
     "no_found": "No logo found",
-    "search": "Pretraži",
+    "search": "Pretraživanje",
     "number_of_results": "Number of results:"
   },
   "settings": {
-    "settings": "Podešavanja",
+    "settings": "Settings",
     "language": "Jezik",
     "save": "Sačuvaj"
   }
