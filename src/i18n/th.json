@@ -28,6 +28,7 @@
     "logos": "Logos",
     "manage": "Manage",
     "insights": "Insights",
+    "nutritions": "ข้อมูลโภชนาการ",
     "settings": "@:settings.settings"
   },
   "insights": {
@@ -45,7 +46,7 @@
     "product_weight": "Product weight",
     "category": "หมวดหมู่:",
     "expiration_date": "Expiration date",
-    "packager_code": "Packager code",
+    "packager_code": "รหัสแพ็คเกจ",
     "skipped": "Skipped (-1)",
     "rejected": "Rejected (0)",
     "accepted": "Accepted (1)",
@@ -68,7 +69,7 @@
     "type": "Type",
     "label": "Label",
     "brand": "ยี่ห้อ",
-    "packager_code": "Packager code",
+    "packager_code": "รหัสแพ็คเกจ",
     "packaging": "บรรจุภัณฑ์",
     "qr_code": "QR code",
     "category": "หมวดหมู่:",

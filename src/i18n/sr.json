@@ -4,7 +4,7 @@
     "label": "label",
     "brand": "бренд",
     "brands": "Брендови",
-    "ingredients": "Sastojci",
+    "ingredients": "Ingredients",
     "product_weight": "product weight",
     "popularity_sort": "Sort by popularity",
     "no": "No",
@@ -28,11 +28,12 @@
     "logos": "Logos",
     "manage": "Manage",
     "insights": "Insights",
+    "nutritions": "Nutrition facts",
     "settings": "@:settings.settings"
   },
   "insights": {
     "insights": "Insights",
-    "barcode": "Barkod",
+    "barcode": "Barcode",
     "barcode_placeholder": "barcode",
     "value_tag": "Value tag",
     "value_placeholder": "ex: en:mueslis, bjorg,...",
@@ -49,7 +50,7 @@
     "skipped": "Skipped (-1)",
     "rejected": "Rejected (0)",
     "accepted": "Accepted (1)",
-    "search": "Pretraživanje",
+    "search": "Search",
     "count": "Count",
     "id": "Id",
     "value": "Value",
@@ -80,12 +81,12 @@
     "full_image": "Full image",
     "update": "Update",
     "no_found": "No logo found",
-    "search": "Pretraživanje",
+    "search": "Search",
     "number_of_results": "Number of results:"
   },
   "settings": {
     "settings": "Settings",
-    "language": "Jezik",
-    "save": "Sačuvaj"
+    "language": "Language",
+    "save": "Save"
   }
 }

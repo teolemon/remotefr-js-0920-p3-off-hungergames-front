@@ -28,6 +28,7 @@
     "logos": "Logotipos",
     "manage": "Gerencie",
     "insights": "Percepções",
+    "nutritions": "Informação nutricional",
     "settings": "@:configurações.configurações"
   },
   "insights": {
@@ -78,8 +79,8 @@
     "id": "ID do logotipo:",
     "barcode": "Código de barras:",
     "full_image": "Imagem inteira",
-    "update": "Update",
-    "no_found": "No logo found",
+    "update": "Atualização",
+    "no_found": "Nenhuma logo encontrada",
     "search": "Procurar",
     "number_of_results": "Número de resultados:"
   },
