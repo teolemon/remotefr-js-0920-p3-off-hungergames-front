@@ -1,7 +1,7 @@
 {
   "questions": {
     "category": "categorie",
-    "label": "label",
+    "label": "keurmerk",
     "brand": "merk",
     "brands": "Merken",
     "ingredients": "Ingrediënten",
@@ -13,7 +13,7 @@
     "no_questions_remaining": "Geen vragen meer",
     "countries": "Landen",
     "view": "Bekijk",
-    "edit": "Wijzig",
+    "edit": "Bewerken",
     "value_search": "Waarde (fanta, en:bio,...)",
     "hide_images": "Afbeeldingen verbergen (sneller laden)",
     "display_images": "Afbeelding weergeven",
@@ -42,7 +42,7 @@
     "annotation": "Aantekening",
     "not_annotated": "Niet geannoteerd",
     "all": "Alles",
-    "label": "Label",
+    "label": "Keurmerk",
     "product_weight": "Productgewicht",
     "category": "Categorie",
     "expiration_date": "Vervaldatum",
@@ -50,7 +50,7 @@
     "skipped": "Overgeslagen (-1)",
     "rejected": "Afgewezen (0)",
     "accepted": "Geaccepteerd (1)",
-    "search": "Zoeken",
+    "search": "Zoek",
     "count": "Aantal",
     "id": "Id",
     "value": "Waarde",
@@ -67,7 +67,7 @@
     "value": "Waarde",
     "submit": "Verzenden",
     "type": "Type",
-    "label": "Label",
+    "label": "Keurmerk",
     "brand": "Merk",
     "packager_code": "Verpakkerscode",
     "packaging": "Verpakking",
@@ -81,12 +81,12 @@
     "full_image": "Volledige afbeelding",
     "update": "Update",
     "no_found": "Geen logo gevonden",
-    "search": "Zoeken",
+    "search": "Zoek",
     "number_of_results": "Aantal resultaten:"
   },
   "settings": {
     "settings": "Instellingen",
     "language": "Taal",
-    "save": "Bewaar"
+    "save": "Opslaan"
   }
 }
